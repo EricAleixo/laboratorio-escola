@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  exame: one
+  unidade_medida: one
+  valor_minimo: 9.99
+  valor_maximo: 9.99
+  sexo: MyString
+
+two:
+  exame: two
+  unidade_medida: two
+  valor_minimo: 9.99
+  valor_maximo: 9.99
+  sexo: MyString

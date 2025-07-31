@@ -1,0 +1,102 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     en:
+#       "yes": yup
+#       enabled: "ON"
+
+en:
+  hello: "Hello world"
+  
+  errors:
+    messages:
+      record_invalid: "A validação falhou: %{errors}"
+      restrict_dependent_destroy:
+        has_one: "Não é possível excluir o registro porque um(a) %{record} dependente existe"
+        has_many: "Não é possível excluir o registro porque os seguintes %{record} dependentes existem"
+    
+  activerecord:
+    errors:
+      models:
+        unidade_referencia:
+          attributes:
+            valor_minimo:
+              blank: "não pode ficar em branco"
+              not_a_number: "deve ser um número"
+              greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+            valor_maximo:
+              blank: "não pode ficar em branco"
+              not_a_number: "deve ser um número"
+              greater_than: "deve ser maior que %{count}"
+            sexo:
+              blank: "não pode ficar em branco"
+              inclusion: "deve ser Masculino, Feminino ou Ambos"
+            idade_minima:
+              blank: "não pode ficar em branco"
+              not_a_number: "deve ser um número"
+              greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+            idade_maxima:
+              blank: "não pode ficar em branco"
+              not_a_number: "deve ser um número"
+              greater_than: "deve ser maior que %{count}"
+            unidade_medida:
+              blank: "deve ser selecionada"
+        exame:
+          attributes:
+            nome:
+              blank: "não pode ficar em branco"
+            descricao:
+              blank: "não pode ficar em branco"
+        unidade_medida:
+          attributes:
+            nome:
+              blank: "não pode ficar em branco"
+            simbolo:
+              blank: "não pode ficar em branco"
+        paciente:
+          attributes:
+            nome:
+              blank: "não pode ficar em branco"
+              too_short: "deve ter pelo menos %{count} caracteres"
+              too_long: "deve ter no máximo %{count} caracteres"
+            data_nascimento:
+              blank: "não pode ficar em branco"
+            sexo:
+              blank: "não pode ficar em branco"
+              inclusion: "deve ser Masculino ou Feminino"
+        exame_paciente:
+          attributes:
+            paciente:
+              blank: "deve ser selecionado"
+            exame:
+              blank: "deve ser selecionado"
+            data_exame:
+              blank: "não pode ficar em branco"
+            resultado:
+              blank: "não pode ficar em branco"
+              not_a_number: "deve ser um número"
+              greater_than: "deve ser maior que %{count}"
+            observacoes:
+              too_long: "deve ter no máximo %{count} caracteres"

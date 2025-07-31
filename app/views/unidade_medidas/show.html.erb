@@ -1,0 +1,85 @@
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="mb-6">
+    <%= link_to "← Voltar para Unidades de Medida", unidade_medidas_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
+  </div>
+
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-lg leading-6 font-medium text-gray-900"><%= @unidade_medida.nome %></h3>
+          <p class="mt-1 max-w-2xl text-sm text-gray-500">Detalhes da unidade de medida</p>
+        </div>
+        <div class="flex space-x-3">
+          <%= link_to "Editar", edit_unidade_medida_path(@unidade_medida), class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= link_to "Excluir", unidade_medida_path(@unidade_medida), method: :delete, data: { confirm: "Tem certeza?" }, class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-200">
+      <dl>
+        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Nome</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @unidade_medida.nome %></dd>
+        </div>
+        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Símbolo</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @unidade_medida.simbolo %></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Exames que usam esta unidade -->
+  <div class="mt-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Exames que usam esta unidade</h3>
+        <p class="mt-2 text-sm text-gray-700">Lista de exames que utilizam esta unidade de medida.</p>
+      </div>
+    </div>
+    
+    <div class="mt-6">
+      <% if @unidade_medida.exames.any? %>
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Nome do Exame</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <% @unidade_medida.exames.each do |exame| %>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                    <%= link_to exame.nome, exame_path(exame), class: "text-indigo-600 hover:text-indigo-900" %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <% if exame.ativo? %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Ativo
+                      </span>
+                    <% else %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        Inativo
+                      </span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhum exame encontrado</h3>
+          <p class="mt-1 text-sm text-gray-500">Esta unidade de medida ainda não está sendo utilizada por nenhum exame.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

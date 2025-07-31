@@ -1,0 +1,213 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+  <div class="px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Análise de Tipos de Exames</h1>
+          <p class="mt-2 text-gray-600">Estatísticas e performance dos tipos de exames</p>
+        </div>
+        <%= link_to root_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar ao Dashboard
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Estatísticas Principais -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600">Total de Tipos</p>
+            <p class="text-2xl font-bold text-gray-900"><%= @total_tipos %></p>
+          </div>
+          <div class="bg-blue-100 p-3 rounded-full">
+            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-green-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600">Tipos Ativos</p>
+            <p class="text-2xl font-bold text-gray-900"><%= @tipos_ativos %></p>
+          </div>
+          <div class="bg-green-100 p-3 rounded-full">
+            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-red-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600">Tipos Inativos</p>
+            <p class="text-2xl font-bold text-gray-900"><%= @tipos_inativos %></p>
+          </div>
+          <div class="bg-red-100 p-3 rounded-full">
+            <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-purple-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600">Taxa de Ativos</p>
+            <p class="text-2xl font-bold text-gray-900">
+              <%= @total_tipos > 0 ? ((@tipos_ativos.to_f / @total_tipos) * 100).round(1) : 0 %>%
+            </p>
+          </div>
+          <div class="bg-purple-100 p-3 rounded-full">
+            <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Análise de Complexidade -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <!-- Tipos Simples vs Complexos -->
+      <div class="bg-white rounded-2xl shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+          Análise de Complexidade
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+            <div class="flex items-center">
+              <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+              <span class="text-sm font-medium text-gray-900">Tipos Simples (≤2 referências)</span>
+            </div>
+            <span class="text-lg font-bold text-green-600"><%= @tipos_simples.count %></span>
+          </div>
+          <div class="flex items-center justify-between p-4 bg-orange-50 rounded-lg">
+            <div class="flex items-center">
+              <div class="w-3 h-3 bg-orange-500 rounded-full mr-3"></div>
+              <span class="text-sm font-medium text-gray-900">Tipos Complexos (>2 referências)</span>
+            </div>
+            <span class="text-lg font-bold text-orange-600"><%= @tipos_complexos.count %></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 5 Tipos Mais Utilizados -->
+      <div class="bg-white rounded-2xl shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+          </svg>
+          Top 5 Tipos Mais Utilizados (30 dias)
+        </h3>
+        <div class="space-y-4">
+          <% @exames_por_tipo.first(5).each_with_index do |(nome, quantidade), index| %>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium <%= index == 0 ? 'bg-yellow-100 text-yellow-800' : index == 1 ? 'bg-gray-100 text-gray-800' : index == 2 ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800' %>">
+                  <%= index + 1 %>
+                </span>
+                <span class="ml-3 text-sm font-medium text-gray-900"><%= nome %></span>
+              </div>
+              <span class="text-sm font-semibold text-gray-600"><%= quantidade %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exames por Tipo (Últimos 30 dias) -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+        </svg>
+        Exames por Tipo (Últimos 30 dias)
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @exames_por_tipo.each do |nome, quantidade| %>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-900"><%= nome %></span>
+              <span class="text-lg font-bold text-indigo-600"><%= quantidade %></span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-indigo-600 h-2 rounded-full" style="width: <%= (@exames_por_tipo.values.max > 0 ? (quantidade.to_f / @exames_por_tipo.values.max * 100) : 0).round %>%"></div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Tipos com Mais Referências -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+        </svg>
+        Tipos com Mais Unidades de Referência
+      </h3>
+      <div class="space-y-4">
+        <% @tipos_com_referencias.first(5).each_with_index do |(nome, quantidade), index| %>
+          <div class="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
+            <div class="flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium bg-purple-100 text-purple-800 mr-3">
+                <%= index + 1 %>
+              </span>
+              <span class="text-sm font-medium text-gray-900"><%= nome %></span>
+            </div>
+            <div class="flex items-center">
+              <span class="text-sm text-purple-600 mr-2"><%= quantidade %> referências</span>
+              <div class="w-16 bg-purple-200 rounded-full h-2">
+                <div class="bg-purple-600 h-2 rounded-full" style="width: <%= (@tipos_com_referencias.values.max > 0 ? (quantidade.to_f / @tipos_com_referencias.values.max * 100) : 0).round %>%"></div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Resumo de Performance -->
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+        </svg>
+        Resumo de Performance
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-green-600 mb-2">
+            <%= @total_tipos > 0 ? ((@tipos_ativos.to_f / @total_tipos) * 100).round(1) : 0 %>%
+          </div>
+          <div class="text-sm text-gray-600">Taxa de Tipos Ativos</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-blue-600 mb-2">
+            <%= @tipos_simples.count %>
+          </div>
+          <div class="text-sm text-gray-600">Tipos Simples</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-orange-600 mb-2">
+            <%= @tipos_complexos.count %>
+          </div>
+          <div class="text-sm text-gray-600">Tipos Complexos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

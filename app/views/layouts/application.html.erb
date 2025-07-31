@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Laboratório Escola</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    
+    <style>
+      .group:hover .group-hover\:visible {
+        visibility: visible;
+      }
+      .group:hover .group-hover\:opacity-100 {
+        opacity: 1;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 flex items-center">
+              <h1 class="text-xl font-bold text-gray-800">Laboratório Escola</h1>
+            </div>
+            <div class="align-center justify-center flex sm:ml-6 sm:space-x-8">
+              <%= link_to "Dashboard", root_path, class: "text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium" %>
+              
+              <!-- Dropdown Configurações -->
+              <div class="relative group">
+                <button class="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium">
+                  Configurações
+                  <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-200">
+                  <div class="py-1">
+                    <%= link_to "Exames", exames_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                    <%= link_to "Unidades de Medida", unidade_medidas_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Dropdown Pacientes -->
+              <div class="relative group">
+                <button class="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium">
+                  Pacientes
+                  <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-200">
+                  <div class="py-1">
+                    <%= link_to "Lista de Pacientes", pacientes_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                    <%= link_to "Exames de Pacientes", exame_pacientes_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <% if notice %>
+      <div class="max-w-7xl mx-auto px-4 mt-4">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+          <span class="block sm:inline"><%= notice %></span>
+        </div>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div class="max-w-7xl mx-auto px-4 mt-4">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <span class="block sm:inline"><%= alert %></span>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <%= yield %>
+    </main>
+  </body>
+</html>
