@@ -9,17 +9,14 @@ class ExamePaciente < ApplicationRecord
   validate :data_exame_nao_futura
   validate :paciente_maior_que_data_nascimento
 
-  # Busca a unidade de referência correta para o paciente (idade + sexo)
   def unidade_referencia
     idade_paciente = paciente.idade
     return nil unless idade_paciente
-    
-    # Primeiro tenta encontrar por sexo específico e idade
+
     ref = exame.unidade_referencias.find_by(sexo: paciente.sexo) do |r|
       r.idade_dentro_da_faixa?(idade_paciente)
     end
-    
-    # Se não encontrar, tenta por sexo "Ambos" e idade
+
     if ref.nil?
       ref = exame.unidade_referencias.find_by(sexo: 'A') do |r|
         r.idade_dentro_da_faixa?(idade_paciente)

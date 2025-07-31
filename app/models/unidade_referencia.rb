@@ -14,13 +14,11 @@ class UnidadeReferencia < ApplicationRecord
   validate :valor_maximo_maior_que_minimo
   validate :idade_maxima_maior_que_minima
   
-  # Verifica se a idade do paciente está dentro da faixa desta referência
   def idade_dentro_da_faixa?(idade_paciente)
     return false unless idade_paciente
     idade_paciente >= idade_minima && idade_paciente <= idade_maxima
   end
-  
-  # Retorna a descrição da faixa etária
+
   def faixa_etaria
     if idade_minima == 0 && idade_maxima >= 120
       "Todas as idades"
