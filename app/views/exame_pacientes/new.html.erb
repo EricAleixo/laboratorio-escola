@@ -3,94 +3,140 @@
     <%= link_to "← Voltar para Exames de Pacientes", exame_pacientes_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
   </div>
 
-  <div class="md:grid md:grid-cols-3 md:gap-6">
-    <div class="md:col-span-1">
-      <div class="px-4 sm:px-0">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Novo Exame de Paciente</h3>
-        <p class="mt-1 text-sm text-gray-600">
-          Registre um novo exame realizado por um paciente.
-        </p>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8 text-center">
+      <div class="inline-flex items-center justify-center bg-gradient-to-br from-indigo-100 to-blue-50 rounded-full p-4 shadow-sm mb-3">
+        <svg class="w-10 h-10 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
       </div>
+      <h2 class="text-3xl font-extrabold text-gray-900">Novo Exame de Paciente</h2>
+      <p class="mt-2 text-gray-500">Preencha os dados para registrar um novo exame realizado por um paciente.</p>
     </div>
-    <div class="mt-5 md:mt-0 md:col-span-2">
-      <%= form_with(model: @exame_paciente, local: true, class: "space-y-6") do |form| %>
-        <% if @exame_paciente.errors.any? %>
-          <div class="rounded-md bg-red-50 p-4">
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
-                </svg>
-              </div>
-              <div class="ml-3">
-                <h3 class="text-sm font-medium text-red-800">
-                  Erro ao salvar o exame:
-                </h3>
-                <div class="mt-2 text-sm text-red-700">
-                  <ul role="list" class="list-disc space-y-1 pl-5">
-                    <% @exame_paciente.errors.full_messages.each do |message| %>
-                      <li><%= message %></li>
-                    <% end %>
-                  </ul>
-                </div>
+
+    <%= form_with(model: @exame_paciente, local: true, class: "space-y-8") do |form| %>
+      <% if @exame_paciente.errors.any? %>
+        <div class="rounded-md bg-red-50 p-4 mb-6">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">
+                Erro ao salvar o exame:
+              </h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul role="list" class="list-disc space-y-1 pl-5">
+                  <% @exame_paciente.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
               </div>
             </div>
           </div>
-        <% end %>
-
-        <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-          <div class="md:grid md:grid-cols-3 md:gap-6">
-            <div class="md:col-span-1">
-              <div class="px-4 sm:px-0">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Dados do Exame</h3>
-                <p class="mt-1 text-sm text-gray-600">
-                  Informações sobre o exame realizado.
-                </p>
-              </div>
-            </div>
-            <div class="mt-5 space-y-6 md:col-span-2 md:mt-0">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Dados do Paciente</label>
-                <%= form.fields_for :novo_paciente do |fp| %>
-                  <%= fp.label :nome, "Nome Completo", class: "block text-xs font-medium text-gray-500 mb-1" %>
-                  <%= fp.text_field :nome, class: "mb-2 mt-1 block w-full px-4 py-3 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-                  <%= fp.label :data_nascimento, "Data de Nascimento", class: "block text-xs font-medium text-gray-500 mb-1" %>
-                  <%= fp.date_field :data_nascimento, class: "mb-2 mt-1 block w-full px-4 py-3 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-                  <%= fp.label :sexo, "Sexo", class: "block text-xs font-medium text-gray-500 mb-1" %>
-                  <%= fp.select :sexo, [['Masculino', 'M'], ['Feminino', 'F']], { prompt: "Selecione o sexo" }, class: "mb-2 mt-1 block w-full px-4 py-3 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-                <% end %>
-              </div>
-
-              <div>
-                <%= form.label :exame_id, "Tipo de Exame", class: "block text-sm font-medium text-gray-700 mb-2" %>
-                <%= form.collection_select :exame_id, @exames, :id, :nome, { prompt: "Selecione o tipo de exame" }, { class: "mt-1 block w-full pl-4 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" } %>
-              </div>
-
-              <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
-                <div>
-                  <%= form.label :data_exame, "Data do Exame", class: "block text-sm font-medium text-gray-700 mb-2" %>
-                  <%= form.date_field :data_exame, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-4 py-3" %>
-                </div>
-
-                <div>
-                  <%= form.label :resultado, "Resultado", class: "block text-sm font-medium text-gray-700 mb-2" %>
-                  <%= form.number_field :resultado, step: :any, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-4 py-3" %>
-                </div>
-              </div>
-
-              <div>
-                <%= form.label :observacoes, "Observações", class: "block text-sm font-medium text-gray-700 mb-2" %>
-                <%= form.text_area :observacoes, rows: 4, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-4 py-3" %>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex justify-end">
-          <%= link_to "Cancelar", exame_pacientes_path, class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-          <%= form.submit "Criar Exame", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
         </div>
       <% end %>
+
+      <!-- Card Dados do Paciente -->
+      <div class="bg-gradient-to-br from-white via-indigo-50 to-blue-50 rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center mb-5">
+          <span class="inline-flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-full p-2 mr-3">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </span>
+          <h3 class="text-xl font-bold text-indigo-800">Dados do Paciente</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <%= form.fields_for :novo_paciente do |fp| %>
+    <div>
+      <%= fp.label :nome, "Nome Completo", class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </span>
+        <%= fp.text_field :nome, placeholder: "Digite o nome completo", class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition placeholder-gray-400 text-gray-700 sm:text-sm" %>
+      </div>
     </div>
+    <div>
+      <%= fp.label :data_nascimento, "Data de Nascimento", class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </span>
+        <%= fp.date_field :data_nascimento, placeholder: "__/__/____", class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition text-gray-700 sm:text-sm" %>
+      </div>
+    </div>
+    <div>
+      <%= fp.label :sexo, "Sexo", class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <%= fp.select :sexo, [['Masculino', 'M'], ['Feminino', 'F']], { prompt: "Selecione o sexo" }, class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition text-gray-700 sm:text-sm appearance-none bg-white" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+      </div>
+
+      <!-- Card Dados do Exame -->
+      <div class="bg-gradient-to-br from-white via-blue-50 to-indigo-50 rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center mb-5">
+          <span class="inline-flex items-center justify-center bg-blue-100 text-blue-600 rounded-full p-2 mr-3">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </span>
+          <h3 class="text-xl font-bold text-blue-800">Dados do Exame</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div>
+    <%= form.label :exame_id, "Tipo de Exame", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    <div class="relative">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      </span>
+      <%= form.collection_select :exame_id, @exames, :id, :nome, { prompt: "Selecione o tipo de exame" }, { class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition text-gray-700 sm:text-sm appearance-none bg-white" } %>
+    </div>
+  </div>
+  <div>
+    <%= form.label :data_exame, "Data do Exame", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    <div class="relative">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </span>
+      <%= form.date_field :data_exame, placeholder: "__/__/____", class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition text-gray-700 sm:text-sm" %>
+    </div>
+  </div>
+  <div>
+    <%= form.label :resultado, "Resultado (Opcional)", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    <div class="relative">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v8m0 0a4 4 0 100-8 4 4 0 000 8z"/></svg>
+      </span>
+      <%= form.number_field :resultado, step: :any, placeholder: "Deixe em branco se ainda não tem o resultado", class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition placeholder-gray-400 text-gray-700 sm:text-sm" %>
+      <p class="mt-1 text-xs text-gray-500">Pode ser preenchido posteriormente quando o resultado estiver disponível</p>
+    </div>
+  </div>
+  <div>
+    <%= form.label :observacoes, "Observações", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    <div class="relative">
+      <span class="absolute inset-y-0 left-0 flex items-start pl-3 pt-3 pointer-events-none">
+        <svg class="w-5 h-5 text-gray-400 mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8v8H8z"/></svg>
+      </span>
+      <%= form.text_area :observacoes, rows: 4, placeholder: "Observações adicionais...", class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition placeholder-gray-400 text-gray-700 sm:text-sm" %>
+    </div>
+  </div>
+</div>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-8">
+        <%= link_to "Cancelar", exame_pacientes_path, class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all" %>
+        <%= form.submit "Criar Exame", class: "inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-base font-bold rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all" %>
+      </div>
+    <% end %>
   </div>
 </div>

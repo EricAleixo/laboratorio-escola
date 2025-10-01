@@ -1,19 +1,22 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="mb-6">
-    <%= link_to "← Voltar para Exames", exames_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
-  </div>
-
-  <div class="md:grid md:grid-cols-3 md:gap-6">
-    <div class="md:col-span-1">
-      <div class="px-4 sm:px-0">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Novo Exame</h3>
-        <p class="mt-1 text-sm text-gray-600">
-          Preencha as informações abaixo para criar um novo exame.
-        </p>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-10 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-full p-4 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+          </svg>
+        </span>
+        <div>
+          <h1 class="text-3xl font-extrabold text-gray-900">Novo Exame</h1>
+          <p class="mt-1 text-gray-600">Preencha as informações para criar um novo exame.</p>
+        </div>
       </div>
+      <%= link_to "Voltar para Exames", exames_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 shadow transition" %>
     </div>
-    <div class="mt-5 md:mt-0 md:col-span-2">
-      <%= form_with(model: @exame, local: true, class: "space-y-6") do |form| %>
+    
+    <div class="bg-white bg-opacity-90 shadow-xl rounded-3xl p-8">
+      <%= form_with(model: @exame, local: true, class: "space-y-8") do |form| %>
         <% if @exame.errors.any? %>
           <div class="rounded-md bg-red-50 p-4">
             <div class="flex">
@@ -50,13 +53,73 @@
             </div>
             <div class="mt-5 space-y-6 md:col-span-2 md:mt-0">
               <div>
-                <%= form.label :nome, class: "block text-sm font-medium text-gray-700 mb-2" %>
-                <%= form.text_field :nome, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-4 py-3" %>
+                <%= form.label :nome, "Nome do Exame", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400 mt-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+                    </svg>
+                  </span>
+                  <%= form.text_field :nome, placeholder: "Digite o nome do exame", class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition placeholder-gray-400 text-gray-700 sm:text-sm" %>
+                </div>
               </div>
 
               <div>
-                <%= form.label :descricao, class: "block text-sm font-medium text-gray-700 mb-2" %>
-                <%= form.text_area :descricao, rows: 4, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-4 py-3" %>
+                <%= form.label :descricao, "Descrição", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-start pl-3 pt-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-400 mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8v8H8z"/></svg>
+                  </span>
+                  <%= form.text_area :descricao, rows: 4, placeholder: "Descrição detalhada do exame", class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition placeholder-gray-400 text-gray-700 sm:text-sm" %>
+                </div>
+              </div>
+
+              <div>
+                <%= form.label :tipo, "Tipo de Exame", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                  </span>
+                  <%= form.select :tipo, options_for_select([["Quantitativo", "quantitativo"], ["Qualitativo", "qualitativo"]], @exame.tipo), {}, class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition text-gray-700 sm:text-sm appearance-none bg-white", id: "tipo" %>
+                </div>
+              </div>
+
+              <div id="info-qualitativo" style="display: none;" class="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 animate-fade-in">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-blue-600">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+                  </div>
+                  <div class="ml-3 flex-1">
+                    <h4 class="text-sm font-semibold text-blue-900 mb-2">Exame Qualitativo</h4>
+                    <p class="text-sm text-blue-800 mb-3">
+                      Exames qualitativos possuem apenas dois resultados possíveis:
+                    </p>
+                    <div class="grid grid-cols-2 gap-3">
+                      <div class="bg-white rounded-lg p-3 border border-blue-200 shadow-sm">
+                        <div class="flex items-center">
+                          <div class="flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-green-600">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                          </div>
+                          <span class="ml-2 text-sm font-medium text-gray-900">Presente</span>
+                        </div>
+                      </div>
+                      <div class="bg-white rounded-lg p-3 border border-blue-200 shadow-sm">
+                        <div class="flex items-center">
+                          <div class="flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-600">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                          </div>
+                          <span class="ml-2 text-sm font-medium text-gray-900">Ausente</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="flex items-start">
@@ -72,11 +135,48 @@
           </div>
         </div>
 
-        <div class="flex justify-end">
-          <%= link_to "Cancelar", exames_path, class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-          <%= form.submit "Criar Exame", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        <div class="flex justify-end gap-3">
+          <%= link_to "Cancelar", exames_path, class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition" %>
+          <%= form.submit "Criar Exame", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition" %>
         </div>
       <% end %>
     </div>
   </div>
 </div>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tipoSelect = document.getElementById('tipo');
+    const infoQualitativo = document.getElementById('info-qualitativo');
+    
+    function toggleInfoQualitativo() {
+      if (tipoSelect.value === 'qualitativo') {
+        infoQualitativo.style.display = '';
+      } else {
+        infoQualitativo.style.display = 'none';
+      }
+    }
+    
+    if (tipoSelect) {
+      tipoSelect.addEventListener('change', toggleInfoQualitativo);
+      toggleInfoQualitativo();
+    }
+  });
+</script>

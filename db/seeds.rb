@@ -20,6 +20,9 @@ end
 
 puts "Unidades de medida criadas!"
 
+#Criar administrador
+User.create!(nome: "Eduardo", email: "edu20264552@gmail.com", password: "123456")
+
 # Criar exames
 puts "Criando exames..."
 

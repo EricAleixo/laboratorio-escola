@@ -16,48 +16,66 @@
       </div>
     </div>
 
-    <!-- Estatísticas -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-600">Total de Exames</p>
-            <p class="text-2xl font-bold text-gray-900"><%= @total_exames %></p>
-          </div>
-          <div class="bg-blue-100 p-3 rounded-full">
-            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Estatísticas modernas -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <!-- Card Exames mês atual -->
+      <div class="bg-gradient-to-br from-blue-50 to-white rounded-3xl shadow-md p-8 flex flex-col items-center justify-center relative group transition-transform hover:-translate-y-1 hover:shadow-xl">
+        <div class="absolute top-3 right-3">
+          <span class="inline-block bg-blue-100 text-blue-600 rounded-full p-2" title="Quantidade de exames cadastrados neste mês">
+            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
             </svg>
-          </div>
+          </span>
+        </div>
+        <p class="text-lg font-semibold text-blue-700 mb-1">Exames mês atual</p>
+        <span class="text-5xl font-extrabold text-blue-900"><%= @exames_mes_atual %></span>
+        <p class="text-xs text-gray-500 mt-2">Mês anterior: <span class="font-semibold"><%= @exames_mes_anterior %></span></p>
+        <div class="mt-2 text-sm">
+          <span class="inline-block px-2 py-1 rounded-full <%= @variacao_exames_mes >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' %>" title="Variação percentual em relação ao mês anterior">
+            <%= @variacao_exames_mes %>%
+          </span>
         </div>
       </div>
-
-      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-yellow-500">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-600">Em Aguardo</p>
-            <p class="text-2xl font-bold text-gray-900"><%= @exames_aguardando %></p>
-          </div>
-          <div class="bg-yellow-100 p-3 rounded-full">
-            <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <!-- Card Aguardando esta semana -->
+      <div class="bg-gradient-to-br from-yellow-50 to-white rounded-3xl shadow-md p-8 flex flex-col items-center justify-center relative group transition-transform hover:-translate-y-1 hover:shadow-xl">
+        <div class="absolute top-3 right-3">
+          <span class="inline-block bg-yellow-100 text-yellow-600 rounded-full p-2" title="Exames aguardando resultado nesta semana">
+            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-          </div>
+          </span>
+        </div>
+        <p class="text-lg font-semibold text-yellow-700 mb-1">Aguardando esta semana</p>
+        <span class="text-5xl font-extrabold text-yellow-900"><%= @aguardando_semana_atual %></span>
+        <p class="text-xs text-gray-500 mt-2">Semana passada: <span class="font-semibold"><%= @aguardando_semana_anterior %></span></p>
+        <div class="mt-2 text-sm">
+          <span class="inline-block px-2 py-1 rounded-full <%= @variacao_aguardando >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' %>" title="Variação percentual em relação à semana passada">
+            <%= @variacao_aguardando %>%
+          </span>
         </div>
       </div>
-
-      <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-green-500">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-600">Emitidos</p>
-            <p class="text-2xl font-bold text-gray-900"><%= @exames_emitidos %></p>
-          </div>
-          <div class="bg-green-100 p-3 rounded-full">
-            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <!-- Card Top exames do mês -->
+      <div class="bg-gradient-to-br from-green-50 to-white rounded-3xl shadow-md p-8 flex flex-col items-center justify-center relative group transition-transform hover:-translate-y-1 hover:shadow-xl">
+        <div class="absolute top-3 right-3">
+          <span class="inline-block bg-green-100 text-green-600 rounded-full p-2" title="Exames mais realizados no mês">
+            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-          </div>
+          </span>
         </div>
+        <p class="text-lg font-semibold text-green-700 mb-1">Top exames do mês</p>
+        <ul class="text-sm mt-2 text-green-900 text-left w-full max-w-xs mx-auto">
+          <% if @top_exames_mes&.any? %>
+            <% @top_exames_mes.each do |nome, qtd| %>
+              <li class="flex justify-between border-b border-green-100 py-1 last:border-0">
+                <span class="font-medium"><%= nome %></span>
+                <span class="font-bold"><%= qtd %></span>
+              </li>
+            <% end %>
+          <% else %>
+            <li class="text-gray-400">Nenhum exame registrado</li>
+          <% end %>
+        </ul>
       </div>
     </div>
 
@@ -66,43 +84,60 @@
       <h3 class="text-lg font-semibold text-gray-900 mb-4">Filtros</h3>
       <%= form_with(url: historico_path, method: :get, local: true, class: "grid grid-cols-1 md:grid-cols-5 gap-4") do |form| %>
         <div>
-          <%= form.label :search, "Buscar", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.text_field :search, 
-              value: params[:search], 
-              placeholder: "Paciente ou exame...", 
-              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          <%= form.label :search, "Buscar", class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </span>
+            <%= form.text_field :search, value: params[:search], placeholder: "Paciente ou exame...", class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition placeholder-gray-400 text-gray-700 sm:text-sm" %>
+          </div>
         </div>
-        
         <div>
-          <%= form.label :status, "Status", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.select :status, 
-              options_for_select([
-                ['Todos', ''],
-                ['Em Aguardo', 'aguardando'],
-                ['Emitidos', 'emitidos']
-              ], params[:status]), 
-              {}, 
-              { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+          <%= form.label :status, "Status", class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <%= form.select :status, options_for_select([["Todos", ""],["Em Aguardo", "aguardando"],["Emitidos", "emitidos"]], params[:status]), {}, { class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition text-gray-700 sm:text-sm appearance-none bg-white" } %>
+          </div>
         </div>
-        
         <div>
-          <%= form.label :data_inicio, "Data Início", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.date_field :data_inicio, 
-              value: params[:data_inicio], 
-              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          <%= form.label :data_inicio, "Data Início", class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+            </span>
+            <%= form.date_field :data_inicio, value: params[:data_inicio], class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition text-gray-700 sm:text-sm" %>
+          </div>
         </div>
-        
         <div>
-          <%= form.label :data_fim, "Data Fim", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.date_field :data_fim, 
-              value: params[:data_fim], 
-              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          <%= form.label :data_fim, "Data Fim", class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+            </span>
+            <%= form.date_field :data_fim, value: params[:data_fim], class: "pl-10 pr-4 py-2 block w-full rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 shadow-sm transition text-gray-700 sm:text-sm" %>
+          </div>
         </div>
-        
         <div class="flex items-end">
-          <div class="flex gap-2">
-            <%= form.submit "Filtrar", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
-            <%= link_to "Limpar", historico_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+          <div class="flex gap-2 w-full">
+            <%= form.submit "Filtrar", class: "inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 shadow transition cursor-pointer" %>
+            <%= link_to "Limpar filtros", historico_path, class: "inline-flex items-center justify-center px-5 py-2 border border-gray-300 text-sm font-semibold rounded-lg text-gray-700 bg-white hover:bg-gray-50 shadow transition" %>
           </div>
         </div>
       <% end %>
@@ -114,12 +149,12 @@
         <div class="flex items-center justify-between">
           <h2 class="text-2xl font-bold text-gray-900">Exames</h2>
           <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full">
-            <%= @exames.count %> resultados
+            <%= @exames&.count || 0 %> resultados
           </span>
         </div>
       </div>
-      
-      <div class="overflow-x-auto">
+      <!-- Desktop Table -->
+      <div class="hidden lg:block overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
@@ -128,63 +163,159 @@
               <th class="px-8 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Exame</th>
               <th class="px-8 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
               <th class="px-8 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th class="px-8 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ver Exame</th>
               <th class="px-8 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <% @exames.each do |exame_paciente| %>
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-8 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                    #<%= exame_paciente.id %>
-                  </span>
-                </td>
-                <td class="px-8 py-4 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 h-8 w-8">
-                      <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <span class="text-sm font-medium text-indigo-600">
-                          <%= exame_paciente.paciente.nome.first.upcase %>
-                        </span>
+            <% if @exames.present? && @exames.count == 0 %>
+              <tr>
+                <td colspan="7" class="text-center text-gray-500 py-8">Nenhum exame encontrado.</td>
+              </tr>
+            <% end %>
+            <% if @exames.present? %>
+              <% @exames.each do |exame_paciente| %>
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-8 py-4 whitespace-nowrap">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      #<%= exame_paciente.id %>
+                    </span>
+                  </td>
+                  <td class="px-8 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-8 w-8">
+                        <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                          <span class="text-sm font-medium text-indigo-600">
+                            <%= exame_paciente.paciente.nome.first.upcase %>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900 flex items-center">
+                          <%= link_to paciente_path(exame_paciente.paciente), class: 'flex items-center hover:text-indigo-600 transition-colors' do %>
+                            <%= exame_paciente.paciente.nome %>
+                          <% end %>
+                        </div>
+                        <div class="text-sm text-gray-500"><%= exame_paciente.paciente.idade %> anos</div>
                       </div>
                     </div>
-                    <div class="ml-4">
-                      <div class="text-sm font-medium text-gray-900"><%= exame_paciente.paciente.nome %></div>
-                      <div class="text-sm text-gray-500"><%= exame_paciente.paciente.idade %> anos</div>
+                  </td>
+                  <td class="px-8 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900">
+                      <%= exame_paciente.exame.nome %>
                     </div>
-                  </div>
-                </td>
-                <td class="px-8 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-gray-900"><%= exame_paciente.exame.nome %></div>
-                </td>
-                <td class="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <%= exame_paciente.data_exame.strftime("%d/%m/%Y") %>
-                </td>
-                <td class="px-8 py-4 whitespace-nowrap">
-                  <% if exame_paciente.observacoes.present? %>
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                      </svg>
-                      Emitido
-                    </span>
-                  <% else %>
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                      <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                      </svg>
-                      Aguardando
-                    </span>
-                  <% end %>
-                </td>
-                <td class="px-8 py-4 whitespace-nowrap text-sm font-medium">
-                  <%= link_to "Ver", exame_paciente_path(exame_paciente), class: "text-indigo-600 hover:text-indigo-900" %>
-                </td>
-              </tr>
+                  </td>
+                  <td class="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <%= exame_paciente.data_exame.strftime("%d/%m/%Y") %>
+                  </td>
+                  <td class="px-8 py-4 whitespace-nowrap">
+                    <% if exame_paciente.observacoes.present? %>
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Emitido
+                      </span>
+                    <% else %>
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        Aguardando
+                      </span>
+                    <% end %>
+                  </td>
+                  <td class="px-8 py-4 whitespace-nowrap text-sm font-medium text-right">
+                    <div class="flex gap-2 justify-end">
+                      <%= link_to exame_paciente_path(exame_paciente), class: "inline-flex items-center px-2 py-1 rounded hover:bg-indigo-100 text-indigo-600", title: "Ver detalhes" do %>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.455 1.612-1.436 3.07-2.79 4.243M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      <% end %>
+                      <%= link_to edit_exame_paciente_path(exame_paciente), class: "inline-flex items-center px-2 py-1 rounded hover:bg-yellow-100 text-yellow-600", title: "Editar exame" do %>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 11l6-6a2.828 2.828 0 114 4l-6 6H9v-4z" />
+                        </svg>
+                      <% end %>
+                      <%= link_to exame_paciente_path(exame_paciente), method: :delete, data: { confirm: "Tem certeza que deseja excluir este exame?" }, class: "inline-flex items-center px-2 py-1 rounded hover:bg-red-100 text-red-600", title: "Excluir exame" do %>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
             <% end %>
           </tbody>
         </table>
       </div>
+      <!-- Mobile Card View -->
+      <div class="lg:hidden p-4">
+        <div class="space-y-4">
+          <% if @exames.present? %>
+            <% @exames.each do |exame_paciente| %>
+              <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                <div class="px-4 py-4">
+                  <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10 mr-3">
+                        <div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                          <span class="text-sm font-medium text-indigo-600">
+                            <%= exame_paciente.paciente.nome.first.upcase %>
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <h4 class="text-lg font-medium text-gray-900">
+                          <%= exame_paciente.paciente.nome %>
+                        </h4>
+                        <p class="text-sm text-gray-500"><%= exame_paciente.paciente.idade %> anos</p>
+                      </div>
+                    </div>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      #<%= exame_paciente.id %>
+                    </span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                    <div>
+                      <span class="font-medium text-gray-900">Exame:</span>
+                      <div class="text-gray-600"><%= exame_paciente.exame.nome %></div>
+                    </div>
+                    <div>
+                      <span class="font-medium text-gray-900">Data:</span>
+                      <div class="text-gray-600"><%= exame_paciente.data_exame.strftime("%d/%m/%Y") %></div>
+                    </div>
+                    <div class="col-span-2">
+                      <span class="font-medium text-gray-900">Status:</span>
+                      <div class="mt-1">
+                        <% if exame_paciente.observacoes.present? %>
+                          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Emitido
+                          </span>
+                        <% else %>
+                          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                            </svg>
+                            Aguardando
+                          </span>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex justify-end">
+                    <%= link_to "Ver Detalhes", exame_paciente_path(exame_paciente), class: "inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          <p class="mt-2 text-gray-600">Visualize e gerencie todos os exames do sistema</p>
+        </div>
+      </div>
     </div>
-  </div>
-</div> 
+</div>

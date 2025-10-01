@@ -20,32 +20,18 @@
     </style>
   </head>
 
+
   <body class="bg-gray-50">
     <nav class="bg-white shadow-lg">
       <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
             <div class="flex-shrink-0 flex items-center">
-              <h1 class="text-xl font-bold text-gray-800">Laboratório Escola</h1>
+              <%= link_to root_path, class: "text-xl font-bold text-gray-800 hover:text-indigo-600 transition-colors" do %>
+                Laboratório Escola
+              <% end %>
             </div>
-            <div class="align-center justify-center flex sm:ml-6 sm:space-x-8">
-              <%= link_to "Dashboard", root_path, class: "text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium" %>
-              
-              <div class="relative group">
-                <button class="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium">
-                  Configurações
-                  <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </button>
-                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-200">
-                  <div class="py-1">
-                    <%= link_to "Exames", exames_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                    <%= link_to "Unidades de Medida", unidade_medidas_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                  </div>
-                </div>
-              </div>
-              
+            <div class="align-center justify-center hidden md:flex sm:ml-6 sm:space-x-8">
               <div class="relative group">
                 <button class="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium">
                   Pacientes
@@ -60,15 +46,40 @@
                   </div>
                 </div>
               </div>
+
+              <div class="relative group">
+                <button class="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium">
+                  Configurações
+                  <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-200">
+                  <div class="py-1">
+                    <%= link_to "Exames", exames_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                    <%= link_to "Unidades de Medida", unidade_medidas_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          
+          <!-- User Menu -->
+          <% if user_signed_in? %>
+            <div class="flex items-center space-x-4">
+              <span class="text-sm text-gray-600">Olá, <%= current_user.nome || current_user.email %></span>
+              <%= button_to "Sair", destroy_user_session_path, 
+                    method: :delete, 
+                    class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors" %>
+            </div>
+          <% end %>
         </div>
       </div>
     </nav>
 
     <% if notice %>
       <div class="max-w-7xl mx-auto px-4 mt-4">
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+        <div class="border-l-4 px-4 py-3 rounded relative mt-4 mx-4 shadow-md bg-green-100 border-green-400 text-green-800" role="alert">
           <span class="block sm:inline"><%= notice %></span>
         </div>
       </div>

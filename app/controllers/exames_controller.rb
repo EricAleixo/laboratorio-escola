@@ -18,6 +18,10 @@ class ExamesController < ApplicationController
 
   def create
     @exame = Exame.new(exame_params)
+
+    if @exame.tipo == 'qualitativo'
+      @exame.opcoes_qualitativo = ['Presente', 'Ausente']
+    end
     
     if @exame.save
       redirect_to @exame, notice: 'Exame criado com sucesso.'
@@ -30,6 +34,11 @@ class ExamesController < ApplicationController
   end
 
   def update
+
+    if @exame.tipo == 'qualitativo'
+      @exame.opcoes_qualitativo = ['Presente', 'Ausente']
+    end
+
     if @exame.update(exame_params)
       redirect_to @exame, notice: 'Exame atualizado com sucesso.'
     else
@@ -49,6 +58,6 @@ class ExamesController < ApplicationController
   end
 
   def exame_params
-    params.require(:exame).permit(:nome, :descricao, :ativo)
+    params.require(:exame).permit(:nome, :descricao, :ativo, :tipo)
   end
 end

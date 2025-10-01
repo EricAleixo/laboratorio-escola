@@ -1,5 +1,5 @@
 class PacientesController < ApplicationController
-  before_action :set_paciente, only: [:show, :edit, :update, :destroy]
+  before_action :set_paciente, only: [:show, :edit, :update, :destroy, :adicionar_exame]
 
   def index
     @pacientes = Paciente.order(:nome)
@@ -42,10 +42,16 @@ class PacientesController < ApplicationController
     redirect_to pacientes_path, notice: 'Paciente excluído com sucesso.'
   end
 
+  def adicionar_exame
+    @exame_paciente = ExamePaciente.new(paciente: @paciente)
+    @exames = Exame.ativos.order(:nome)
+  end
+
   private
 
   def set_paciente
-    @paciente = Paciente.find(params[:id])
+    paciente_id = params[:id] || params[:paciente_id]
+    @paciente = Paciente.find(paciente_id)
   end
 
   def paciente_params

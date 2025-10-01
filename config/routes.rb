@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  devise_for :users, skip: [:registrations]
   get 'unidade_referencias/index'
   get 'unidade_referencias/show'
   get 'unidade_referencias/new'
@@ -18,6 +20,15 @@ Rails.application.routes.draw do
   # Rota para histórico de exames
   get "historico" => "application#historico", as: :historico
   
+  # Rota para emitir exames
+  get "emitir_exames/:paciente_id", to: "exame_pacientes#emitir_exames", as: :emitir_exames
+  
+  # Rota para pré-visualização do PDF dos exames
+  get "preview_pdf/:paciente_id", to: "exame_pacientes#preview_pdf", as: :preview_pdf
+  
+  # Rota para gerar PDF dos exames
+  get "exames_pdf/:paciente_id", to: "exame_pacientes#exames_pdf", as: :exames_pdf
+  
   # Rotas para análise de exames
   get "analise/exames" => "application#analise_exames", as: :analise_exames
   get "analise/emitidos" => "application#analise_emitidos", as: :analise_emitidos
@@ -30,6 +41,8 @@ Rails.application.routes.draw do
   resources :unidade_medidas
   resources :pacientes do
     resources :exame_pacientes
+    get "adicionar_exame" => "pacientes#adicionar_exame", as: :adicionar_exame
   end
   resources :exame_pacientes
+  post "confirmar_emissao/:paciente_id", to: "exame_pacientes#confirmar_emissao", as: :confirmar_emissao
 end

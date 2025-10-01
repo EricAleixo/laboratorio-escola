@@ -6,21 +6,66 @@
     </div>
     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
       <%= link_to "Novo Exame", new_exame_paciente_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
+      <%= link_to "Adicionar a Paciente Existente", pacientes_path, class: "ml-3 inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
     </div>
   </div>
   
-  <!-- Barra de Pesquisa -->
-  <div class="mt-6">
-    <%= form_with(url: exame_pacientes_path, method: :get, local: true, class: "flex gap-4") do |form| %>
-      <div class="flex-1">
-        <%= form.text_field :search, 
-            value: params[:search], 
-            placeholder: "Buscar por paciente ou exame...", 
-            class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2" %>
+  <!-- Barra de Pesquisa Otimizada -->
+  <div class="mt-6 animate-search">
+    <%= form_with(url: exame_pacientes_path, method: :get, local: true, class: "space-y-4") do |form| %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Busca por Paciente -->
+        <div class="relative">
+          <label for="search_paciente" class="block text-sm font-medium text-gray-700 mb-2">
+            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            Buscar por Paciente
+          </label>
+          <%= form.text_field :search_paciente, 
+              value: params[:search_paciente], 
+              placeholder: "Digite o nome do paciente...", 
+              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 transition-all duration-200 hover:border-gray-400" %>
+        </div>
+        
+        <!-- Busca por Exame -->
+        <div class="relative">
+          <label for="search_exame" class="block text-sm font-medium text-gray-700 mb-2">
+            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            Buscar por Exame
+          </label>
+          <%= form.text_field :search_exame, 
+              value: params[:search_exame], 
+              placeholder: "Digite o nome do exame...", 
+              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 transition-all duration-200 hover:border-gray-400" %>
+        </div>
       </div>
-      <div class="flex gap-2">
-        <%= form.submit "Buscar", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-        <%= link_to "Limpar", exame_pacientes_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      
+      <!-- Botões de Ação -->
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <%= form.submit "Buscar", class: "inline-flex items-center justify-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 hover:scale-105 btn-loading" %>
+        <%= link_to "Limpar Filtros", exame_pacientes_path, class: "inline-flex items-center justify-center px-6 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 hover:scale-105" %>
+        
+        <!-- Indicadores de Filtros Ativos -->
+        <% if params[:search_paciente].present? || params[:search_exame].present? %>
+          <div class="flex items-center space-x-2 text-sm text-gray-600">
+            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              Filtros ativos
+            </span>
+            <% if params[:search_paciente].present? %>
+              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                Paciente: <%= params[:search_paciente] %>
+              </span>
+            <% end %>
+            <% if params[:search_exame].present? %>
+              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                Exame: <%= params[:search_exame] %>
+              </span>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>
@@ -33,50 +78,94 @@
             <thead class="bg-gray-50">
               <tr>
                 <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Paciente</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Exame</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Data</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Resultado</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Observações</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Qtd. Exames</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Último Exame</th>
                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                  <span class="sr-only">Ações</span>
+                  <span class="sr-only">Expandir</span>
                 </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-              <% @exame_pacientes.each do |exame_paciente| %>
-                <tr>
+              <% @pacientes_com_exames.each_with_index do |(paciente, exames), index| %>
+                <!-- Linha principal do paciente -->
+                <tr class="cursor-pointer hover:bg-gray-50" onclick="toggleExames(<%= index %>)">
                   <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                    <%= link_to exame_paciente.paciente.nome, paciente_path(exame_paciente.paciente), class: "text-indigo-600 hover:text-indigo-900" %>
-                    <div class="text-xs text-gray-500">
-                      <%= exame_paciente.paciente.idade %> anos, <%= exame_paciente.paciente.sexo == 'M' ? 'M' : 'F' %>
+                    <div class="flex items-center">
+                      <svg id="arrow-<%= index %>" class="w-4 h-4 mr-2 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                      </svg>
+                      <%= link_to paciente.nome, paciente_path(paciente), class: "text-indigo-600 hover:text-indigo-900", onclick: "event.stopPropagation()" %>
+                    </div>
+                    <div class="text-xs text-gray-500 ml-6">
+                      <%= paciente.idade %> anos, <%= paciente.sexo == 'M' ? 'M' : 'F' %>
                     </div>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <%= link_to exame_paciente.exame.nome, exame_path(exame_paciente.exame), class: "text-indigo-600 hover:text-indigo-900" %>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <%= exames.count %> exame<%= exames.count != 1 ? 's' : '' %>
+                    </span>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <%= exame_paciente.data_exame&.strftime("%d/%m/%Y") %>
-                  </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <%= exame_paciente.resultado %>
-                  </td>
-                  <td class="px-3 py-4 text-sm text-gray-500">
-                    <div class="max-w-xs truncate" title="<%= exame_paciente.observacoes %>">
-                      <%= exame_paciente.observacoes %>
-                    </div>
+                    <% ultimo_exame = exames.max_by(&:data_exame) %>
+                    <%= ultimo_exame&.data_exame&.strftime("%d/%m/%Y") || 'N/A' %>
                   </td>
                   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <div class="flex space-x-2">
-                      <%= link_to "Ver", exame_paciente_path(exame_paciente), class: "text-indigo-600 hover:text-indigo-900" %>
-                      <%= link_to "Editar", edit_exame_paciente_path(exame_paciente), class: "text-indigo-600 hover:text-indigo-900" %>
-                      <%= button_to "Excluir", exame_paciente_path(exame_paciente), 
-                          method: :delete, 
-                          data: { confirm: "Tem certeza?" }, 
-                          class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer",
-                          form: { style: "display: inline;" } %>
-                    </div>
+                    <span class="text-gray-400">Clique para expandir</span>
                   </td>
                 </tr>
+                
+                <!-- Linhas dos exames (inicialmente ocultas) -->
+                <% exames.each do |exame_paciente| %>
+                  <tr id="exame-<%= index %>-<%= exame_paciente.id %>" class="exames-<%= index %> hidden bg-gray-50">
+                    <td class="whitespace-nowrap py-3 pl-12 pr-3 text-sm text-gray-600 sm:pl-14">
+                      <div class="flex items-center">
+                        <% situacao = exame_paciente.situacao_resultado %>
+                        <div class="w-2 h-2 rounded-full mr-3 <%= case situacao when :normal then 'bg-green-500' when :abaixo then 'bg-yellow-500' when :acima then 'bg-red-500' else 'bg-gray-400' end %>"></div>
+                        <%= link_to "#{exame_paciente.exame.nome} - #{exame_paciente.resultado}", exame_path(exame_paciente.exame), class: "text-indigo-600 hover:text-indigo-900" %>
+                      </div>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
+                      <%= exame_paciente.data_exame&.strftime("%d/%m/%Y") %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-3 text-sm">
+                      <% 
+                        situacao_badge = exame_paciente.situacao_resultado
+                        if situacao_badge == :normal
+                          cor_classe = 'bg-green-100 text-green-800 border-green-200'
+                          icone = '✓'
+                          texto = 'Dentro do esperado'
+                        elsif situacao_badge == :acima
+                          cor_classe = 'bg-red-100 text-red-800 border-red-200'
+                          icone = '↑'
+                          texto = 'Acima do esperado'
+                        elsif situacao_badge == :abaixo
+                          cor_classe = 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                          icone = '↓'
+                          texto = 'Abaixo do esperado'
+                        else
+                          cor_classe = 'bg-gray-100 text-gray-800 border-gray-200'
+                          icone = '•'
+                          texto = 'Indefinido'
+                        end
+                      %>
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border <%= cor_classe %>">
+                        <span class="mr-1"><%= icone %></span>
+                        <%= texto %>
+                      </span>
+                    </td>
+                    <td class="relative whitespace-nowrap py-3 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                      <div class="flex space-x-2 justify-end">
+                        <%= link_to "Ver", exame_paciente_path(exame_paciente), class: "text-indigo-600 hover:text-indigo-900" %>
+                        <%= link_to "Editar", edit_exame_paciente_path(exame_paciente), class: "text-indigo-600 hover:text-indigo-900" %>
+                        <%= button_to "Excluir", exame_paciente_path(exame_paciente), 
+                            method: :delete, 
+                            data: { confirm: "Tem certeza?" }, 
+                            class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer",
+                            form: { style: "display: inline;" } %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
               <% end %>
             </tbody>
           </table>
@@ -85,3 +174,173 @@
     </div>
   </div>
 </div>
+
+<style>
+/* Animações de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Aplicar animações aos elementos */
+.animate-header {
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.animate-search {
+  animation: slideIn 0.8s ease-out 0.2s both;
+}
+
+.animate-table {
+  animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.animate-row {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+/* Transições suaves para hover */
+.hover-scale {
+  transition: all 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Animação para as linhas de exames */
+.exam-row {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+}
+
+.exam-row.show {
+  max-height: 200px;
+  opacity: 1;
+}
+
+/* Animação da seta */
+.arrow-transition {
+  transition: transform 0.3s ease;
+}
+
+/* Efeito de pulse nos badges */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.badge-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Animação de loading para botões */
+.btn-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s;
+}
+
+.btn-loading:hover::after {
+  left: 100%;
+}
+</style>
+
+<script>
+function toggleExames(index) {
+  const exameRows = document.querySelectorAll('.exames-' + index);
+  const arrow = document.getElementById('arrow-' + index);
+  
+  exameRows.forEach((row, i) => {
+    if (row.classList.contains('hidden')) {
+      // Mostrar com animação
+      row.classList.remove('hidden');
+      row.classList.remove('exam-row');
+      row.classList.add('exam-row', 'show');
+      
+      // Animar cada linha com delay
+      setTimeout(() => {
+        row.style.animation = `fadeInUp 0.4s ease-out ${i * 0.1}s both`;
+      }, 10);
+      
+      arrow.style.transform = 'rotate(90deg)';
+    } else {
+      // Ocultar com animação
+      row.style.animation = `fadeInUp 0.3s ease-out reverse`;
+      
+      setTimeout(() => {
+        row.classList.add('hidden');
+        row.classList.remove('show');
+      }, 300);
+      
+      arrow.style.transform = 'rotate(0deg)';
+    }
+  });
+}
+
+// Adicionar animações quando a página carrega
+document.addEventListener('DOMContentLoaded', function() {
+  // Animar linhas da tabela com delay
+  const tableRows = document.querySelectorAll('tbody tr:not([class*="exames-"])');
+  tableRows.forEach((row, index) => {
+    row.style.animation = `fadeInUp 0.5s ease-out ${index * 0.1}s both`;
+  });
+  
+  // Adicionar efeito hover aos botões
+  const buttons = document.querySelectorAll('a[class*="bg-"], button[class*="bg-"]');
+  buttons.forEach(btn => {
+    btn.classList.add('btn-loading');
+  });
+  
+  // Adicionar pulse aos badges
+  const badges = document.querySelectorAll('.bg-blue-100');
+  badges.forEach(badge => {
+    badge.classList.add('badge-pulse');
+  });
+});
+</script>

@@ -3,7 +3,7 @@ class ExamePaciente < ApplicationRecord
   belongs_to :exame
   
   validates :data_exame, presence: true
-  validates :resultado, presence: true, numericality: { greater_than: 0 }
+  validates :resultado, numericality: { greater_than: 0 }, allow_blank: true
   validates :observacoes, length: { maximum: 500 }
   
   validate :data_exame_nao_futura
@@ -28,6 +28,7 @@ class ExamePaciente < ApplicationRecord
 
   # Retorna :abaixo, :normal ou :acima
   def situacao_resultado
+    return :indefinido unless resultado.present?
     ref = unidade_referencia
     return :indefinido unless ref
     return :abaixo if resultado < ref.valor_minimo

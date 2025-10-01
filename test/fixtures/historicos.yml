@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  paciente: one
+  exame_paciente: one
+  numero_os: MyString
+  acao: MyString
+
+two:
+  paciente: two
+  exame_paciente: two
+  numero_os: MyString
+  acao: MyString

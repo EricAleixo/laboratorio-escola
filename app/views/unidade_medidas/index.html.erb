@@ -24,11 +24,10 @@
     <% end %>
   </div>
   
-  <div class="mt-8 flex flex-col">
-    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-300">
+  <!-- Desktop Table -->
+  <div class="mt-8 hidden lg:block">
+    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+      <table class="min-w-full divide-y divide-gray-300">
             <thead class="bg-gray-50">
               <tr>
                 <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Nome</th>
@@ -59,8 +58,36 @@
               <% end %>
             </tbody>
           </table>
+    </div>
+  </div>
+
+  <!-- Mobile Card View -->
+  <div class="mt-8 lg:hidden">
+    <div class="space-y-4">
+      <% @unidade_medidas.each do |unidade_medida| %>
+        <div class="bg-white shadow rounded-lg border border-gray-200 overflow-hidden">
+          <div class="px-4 py-4">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg font-medium text-gray-900">
+                <%= link_to unidade_medida.nome, unidade_medida_path(unidade_medida), class: "text-indigo-600 hover:text-indigo-900" %>
+              </h3>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                <%= unidade_medida.simbolo %>
+              </span>
+            </div>
+            
+            <div class="flex flex-wrap gap-2">
+              <%= link_to "Ver", unidade_medida_path(unidade_medida), class: "inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+              <%= link_to "Editar", edit_unidade_medida_path(unidade_medida), class: "inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+              <%= button_to "Excluir", unidade_medida_path(unidade_medida), 
+                  method: :delete, 
+                  data: { confirm: "Tem certeza?" }, 
+                  class: "inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-red-600 hover:bg-red-700",
+                  form: { class: "inline" } %>
+            </div>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>

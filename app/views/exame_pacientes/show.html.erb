@@ -1,85 +1,109 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="mb-6">
-    <%= link_to "← Voltar para Exames de Pacientes", exame_pacientes_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8 flex items-center">
+    <%= link_to "← Voltar para Exames de Pacientes", exame_pacientes_path, class: "text-indigo-700 hover:text-indigo-900 text-base font-semibold transition-colors duration-200" %>
   </div>
 
   <% ref = @exame_paciente.unidade_referencia %>
   <% situacao = @exame_paciente.situacao_resultado %>
 
-  <div class="flex items-center space-x-4 mb-8">
-    <div class="flex items-center justify-center w-16 h-16 rounded-full
+  <div class="flex flex-col md:flex-row items-center md:items-stretch gap-6 mb-10">
+    <div class="flex flex-col items-center justify-center w-28 h-28 rounded-full shadow-lg border-4
       <%= case situacao
-        when :normal then 'bg-green-100 text-green-700'
-        when :abaixo then 'bg-yellow-100 text-yellow-700'
-        when :acima then 'bg-red-100 text-red-700'
-        else 'bg-gray-100 text-gray-700' end %>">
-
+        when :normal then 'bg-green-50 border-green-200 text-green-700'
+        when :abaixo then 'bg-yellow-50 border-yellow-200 text-yellow-700'
+        when :acima then 'bg-red-50 border-red-200 text-red-700'
+        else 'bg-gray-100 border-gray-200 text-gray-700' end %>">
       <% if situacao == :normal %>
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+        <svg class="w-14 h-14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
       <% elsif situacao == :abaixo %>
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01" /><circle cx="12" cy="12" r="10" /></svg>
+        <svg class="w-14 h-14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01" /><circle cx="12" cy="12" r="10" /></svg>
       <% elsif situacao == :acima %>
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        <svg class="w-14 h-14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
       <% else %>
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01" /></svg>
+        <svg class="w-14 h-14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01" /></svg>
       <% end %>
+      <span class="mt-2 text-xs font-bold uppercase tracking-wider"><%= situacao.to_s.titleize %></span>
     </div>
-    <div>
-      <div class="text-lg font-bold">
-        <span>Resultado:</span>
-        <span class="text-2xl align-middle ml-2"><%= @exame_paciente.resultado %></span>
+    <div class="flex-1 flex flex-col justify-center items-center md:items-start">
+      <div class="text-3xl font-extrabold mb-2">
+        <span>Resultado</span>:
+        <span class="ml-2 text-4xl align-middle <%= case situacao
+          when :normal then 'text-green-700'
+          when :abaixo then 'text-yellow-700'
+          when :acima then 'text-red-700'
+          else 'text-gray-700' end %>"><%= @exame_paciente.resultado %></span>
         <% if ref %>
-          <span class="ml-2 text-base text-gray-600 font-normal">(<%= ref.unidade_medida.simbolo %>)</span>
+          <span class="ml-2 text-lg text-gray-500 font-normal">(<%= ref.unidade_medida.simbolo %>)</span>
         <% end %>
       </div>
-      <div class="mt-1">
+      <div class="mt-2">
         <% if situacao == :normal %>
-          <span class="text-green-700 font-semibold">Dentro do esperado</span>
+          <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">Dentro do esperado</span>
         <% elsif situacao == :abaixo %>
-          <span class="text-yellow-700 font-semibold">Abaixo do esperado</span>
+          <span class="inline-block bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold">Abaixo do esperado</span>
         <% elsif situacao == :acima %>
-          <span class="text-red-700 font-semibold">Acima do esperado</span>
+          <span class="inline-block bg-red-100 text-red-800 px-3 py-1 rounded-full font-semibold">Acima do esperado</span>
         <% else %>
-          <span class="text-gray-700 font-semibold">Referência indefinida</span>
+          <span class="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-semibold">Referência indefinida</span>
         <% end %>
       </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-    <div class="bg-white shadow rounded-lg p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-        <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.797.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+    <div class="bg-gradient-to-br from-indigo-50 to-white shadow-xl rounded-2xl p-8 flex flex-col items-start border border-indigo-100">
+      <h3 class="text-2xl font-bold text-indigo-700 mb-6 flex items-center gap-3">
+        <svg class="w-9 h-9 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.797.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
         Dados do Paciente
       </h3>
-      <p><strong>Nome:</strong> <%= @exame_paciente.paciente.nome %></p>
-      <p><strong>Data de Nascimento:</strong> <%= @exame_paciente.paciente.data_nascimento.strftime('%d/%m/%Y') %></p>
-      <p><strong>Idade:</strong> <%= @exame_paciente.paciente.idade %> anos</p>
-      <p><strong>Sexo:</strong> <%= @exame_paciente.paciente.sexo == 'M' ? 'Masculino' : 'Feminino' %></p>
+      <div class="space-y-2 text-lg w-full">
+        <p><span class="font-semibold text-gray-700">Nome:</span> <span class="text-gray-900"><%= @exame_paciente.paciente.nome %></span></p>
+        <p><span class="font-semibold text-gray-700">Data de Nascimento:</span> <span class="text-gray-900"><%= @exame_paciente.paciente.data_nascimento.strftime('%d/%m/%Y') %></span></p>
+        <p><span class="font-semibold text-gray-700">Idade:</span> <span class="text-gray-900"><%= @exame_paciente.paciente.idade %> anos</span></p>
+        <p><span class="font-semibold text-gray-700">Sexo:</span> <span class="text-gray-900"><%= @exame_paciente.paciente.sexo == 'M' ? 'Masculino' : 'Feminino' %></span></p>
+      </div>
     </div>
-    <div class="bg-white shadow rounded-lg p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-        <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2a4 4 0 014-4h4" /></svg>
+    <div class="bg-gradient-to-br from-pink-50 to-white shadow-xl rounded-2xl p-8 flex flex-col items-start border border-pink-100">
+      <h3 class="text-2xl font-bold text-pink-700 mb-6 flex items-center gap-3">
+        <svg class="w-9 h-9 text-pink-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2a4 4 0 014-4h4" /></svg>
         Dados do Exame
       </h3>
-      <p><strong>Tipo:</strong> <%= @exame_paciente.exame.nome %></p>
-      <p><strong>Data do Exame:</strong> <%= @exame_paciente.data_exame.strftime('%d/%m/%Y') %></p>
-      <% if ref %>
-        <p><strong>Referência:</strong> <span class="font-mono"><%= ref.valor_minimo %> - <%= ref.valor_maximo %> <%= ref.unidade_medida.nome %> (<%= ref.unidade_medida.simbolo %>)</span></p>
-        <p><strong>Faixa Etária:</strong> <span class="text-sm text-gray-600"><%= ref.faixa_etaria %> | <%= ref.sexo == 'M' ? 'Masculino' : (ref.sexo == 'F' ? 'Feminino' : 'Ambos') %></span></p>
-      <% else %>
-        <p class="text-red-600">Sem referência cadastrada para este sexo e idade.</p>
-      <% end %>
+      <div class="space-y-2 text-lg w-full">
+        <p><span class="font-semibold text-gray-700">Tipo:</span> <span class="text-gray-900"><%= @exame_paciente.exame.nome %></span></p>
+        <p><span class="font-semibold text-gray-700">Data do Exame:</span> <span class="text-gray-900"><%= @exame_paciente.data_exame.strftime('%d/%m/%Y') %></span></p>
+        <% if ref %>
+          <p><span class="font-semibold text-gray-700">Referência:</span> <span class="font-mono text-gray-800"><%= ref.valor_minimo %> - <%= ref.valor_maximo %> <%= ref.unidade_medida.nome %> (<%= ref.unidade_medida.simbolo %>)</span></p>
+          <p><span class="font-semibold text-gray-700">Faixa Etária:</span> <span class="text-sm text-gray-600"><%= ref.faixa_etaria %> | <%= ref.sexo == 'M' ? 'Masculino' : (ref.sexo == 'F' ? 'Feminino' : 'Ambos') %></span></p>
+        <% else %>
+          <p class="text-red-600 font-semibold">Sem referência cadastrada para este sexo e idade.</p>
+        <% end %>
+      </div>
     </div>
   </div>
 
   <% if @exame_paciente.observacoes.present? %>
-    <div class="bg-white shadow rounded-lg p-6 mb-8">
-      <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-        <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 14h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8a9 9 0 1118 0z" /></svg>
+    <div class="bg-gradient-to-br from-yellow-50 to-white shadow-xl rounded-2xl p-8 mb-12 border border-yellow-100">
+      <h3 class="text-2xl font-bold text-yellow-700 mb-4 flex items-center gap-3">
+        <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 14h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8a9 9 0 1118 0z" /></svg>
         Observações
       </h3>
-      <div class="bg-gray-50 rounded-md p-4 text-gray-700"><%= @exame_paciente.observacoes %></div>
+      <div class="bg-yellow-50 rounded-lg p-5 text-gray-800 text-lg leading-relaxed border border-yellow-100"><%= @exame_paciente.observacoes %></div>
     </div>
   <% end %>
+
+  <!-- Ações -->
+  <div class="flex flex-col sm:flex-row justify-end items-center gap-4 mt-2 mb-2">
+    <%= link_to edit_exame_paciente_path(@exame_paciente), class: "inline-flex items-center px-6 py-3 border-2 border-indigo-200 shadow-lg text-lg font-semibold rounded-xl text-indigo-800 bg-indigo-50 hover:bg-indigo-100 hover:text-indigo-900 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400" do %>
+      <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+      </svg>
+      Editar
+    <% end %>
+    <%= button_to exame_paciente_path(@exame_paciente), method: :delete, class: "inline-flex items-center px-6 py-3 border-2 border-transparent shadow-lg text-lg font-semibold rounded-xl text-white bg-red-500 hover:bg-red-600 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400", data: { turbo_confirm: "Tem certeza que deseja excluir este exame?" } do %>
+      <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+      </svg>
+      Excluir
+    <% end %>
+  </div>
 </div>
