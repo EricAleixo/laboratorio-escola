@@ -1,6 +1,6 @@
 <div class="px-4 sm:px-6 lg:px-8">
   <div class="mb-6">
-    <%= link_to "← Voltar para Exames", exames_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
+    <%= link_to "Voltar para Exames", exames_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
   </div>
 
   <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -51,12 +51,20 @@
             <div class="mt-5 space-y-6 md:col-span-2 md:mt-0">
               <div>
                 <%= form.label :nome, class: "block text-sm font-medium text-gray-700" %>
-                <%= form.text_field :nome, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+                <%= form.text_field :nome, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" %>
+              </div>
+
+              <div>
+                <%= form.label :tipo, class: "block text-sm font-medium text-gray-700" %>
+                <%= form.select :tipo, 
+                      options_for_select([['Quantitativo', 'quantitativo'], ['Qualitativo', 'qualitativo']], @exame.tipo),
+                      {}, 
+                      class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 p-2" %>
               </div>
 
               <div>
                 <%= form.label :descricao, class: "block text-sm font-medium text-gray-700" %>
-                <%= form.text_area :descricao, rows: 3, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+                <%= form.text_area :descricao, rows: 3, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" %>
               </div>
 
               <div class="flex items-start">

@@ -1,6 +1,6 @@
 <div class="px-4 sm:px-6 lg:px-8">
   <div class="mb-6">
-    <%= link_to "← Voltar para Unidades de Medida", unidade_medidas_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
+    <%= link_to "Voltar para Unidades de Medida", unidade_medidas_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
   </div>
 
   <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -51,12 +51,12 @@
             <div class="mt-5 space-y-6 md:col-span-2 md:mt-0">
               <div>
                 <%= form.label :nome, class: "block text-sm font-medium text-gray-700" %>
-                <%= form.text_field :nome, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+                <%= form.text_field :nome, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm px-3 py-2 sm:text-sm border-gray-300 rounded-md" %>
               </div>
 
               <div>
                 <%= form.label :simbolo, class: "block text-sm font-medium text-gray-700" %>
-                <%= form.text_field :simbolo, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+                <%= form.text_field :simbolo, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm px-3 py-2 sm:text-sm border-gray-300 rounded-md" %>
                 <p class="mt-2 text-sm text-gray-500">Exemplo: mg/dL, mmol/L, g/L, etc.</p>
               </div>
             </div>

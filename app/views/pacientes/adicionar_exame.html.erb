@@ -1,6 +1,6 @@
 <div class="px-4 sm:px-6 lg:px-8">
   <div class="mb-6">
-    <%= link_to "← Voltar para Paciente", paciente_path(@paciente), class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
+    <%= link_to "Voltar para Paciente", paciente_path(@paciente), class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
   </div>
 
   <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -15,6 +15,8 @@
     <div class="mt-5 md:mt-0 md:col-span-2">
       <%= form_with(model: @exame_paciente, local: true, class: "space-y-6") do |form| %>
         <%= form.hidden_field :paciente_id, value: @paciente.id %>
+        <%= form.hidden_field :resultado, id: "resultado_hidden" %>
+        
         <% if @exame_paciente.errors.any? %>
           <div class="rounded-md bg-red-50 p-4">
             <div class="flex">
@@ -52,45 +54,168 @@
             <div class="mt-5 space-y-6 md:col-span-2 md:mt-0">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Dados do Paciente</label>
-                <div class="bg-indigo-50 p-4 rounded-md border border-indigo-200">
-                  <p class="text-sm text-gray-900"><strong>Nome:</strong> <%= @paciente.nome %></p>
-                  <p class="text-sm text-gray-600"><strong>Data de Nascimento:</strong> <%= @paciente.data_nascimento.strftime("%d/%m/%Y") %></p>
-                  <p class="text-sm text-gray-600"><strong>Idade:</strong> <%= @paciente.idade %> anos</p>
-                  <p class="text-sm text-gray-600"><strong>Sexo:</strong> <%= @paciente.sexo == 'M' ? 'Masculino' : 'Feminino' %></p>
+                <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-4 rounded-lg border-2 border-indigo-200">
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <p class="text-xs text-indigo-600 font-semibold uppercase tracking-wider">Nome</p>
+                      <p class="text-sm text-gray-900 font-medium"><%= @paciente.nome %></p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-indigo-600 font-semibold uppercase tracking-wider">Idade</p>
+                      <p class="text-sm text-gray-900 font-medium"><%= @paciente.idade %> anos</p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-indigo-600 font-semibold uppercase tracking-wider">Data de Nascimento</p>
+                      <p class="text-sm text-gray-900"><%= @paciente.data_nascimento.strftime("%d/%m/%Y") %></p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-indigo-600 font-semibold uppercase tracking-wider">Sexo</p>
+                      <p class="text-sm text-gray-900"><%= @paciente.sexo == 'M' ? 'Masculino' : 'Feminino' %></p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div>
-                <%= form.label :exame_id, "Tipo de Exame", class: "block text-sm font-medium text-gray-700 mb-2" %>
-                <%= form.collection_select :exame_id, @exames, :id, :nome, { prompt: "Selecione o tipo de exame" }, { class: "mt-1 block w-full pl-4 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" } %>
-              </div>
-
-              <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
-                <div>
-                  <%= form.label :data_exame, "Data do Exame", class: "block text-sm font-medium text-gray-700 mb-2" %>
-                  <%= form.date_field :data_exame, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-4 py-3" %>
-                </div>
-
-                <div>
-                  <%= form.label :resultado, "Resultado (Opcional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
-                  <%= form.number_field :resultado, step: :any, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-4 py-3", placeholder: "Deixe em branco se ainda não tem o resultado" %>
-                  <p class="mt-1 text-xs text-gray-500">Pode ser preenchido posteriormente quando o resultado estiver disponível</p>
-                </div>
+                <%= form.label :exame_id, "Tipo de Exame", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+                <%= form.collection_select :exame_id, @exames, :id, :nome, { prompt: "Selecione o tipo de exame" }, { class: "mt-1 block w-full pl-4 pr-10 py-3 text-base border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-lg shadow-sm transition", id: "exame_select" } %>
               </div>
 
               <div>
-                <%= form.label :observacoes, "Observações", class: "block text-sm font-medium text-gray-700 mb-2" %>
-                <%= form.text_area :observacoes, rows: 4, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-4 py-3", placeholder: "Observações sobre o exame..." %>
+                <%= form.label :data_exame, "Data do Exame", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+                <%= form.date_field :data_exame, class: "mt-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-2 border-gray-300 rounded-lg px-4 py-3 transition" %>
+              </div>
+
+              <!-- Campo de Resultado Quantitativo -->
+              <div id="resultado_quantitativo">
+                <%= form.label :resultado, "Resultado (Opcional)", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+                <%= form.number_field :resultado, step: :any, class: "mt-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-2 border-gray-300 rounded-lg px-4 py-3 transition", placeholder: "Digite o valor do resultado", id: "resultado_numero" %>
+                <p class="mt-1 text-xs text-gray-500">Pode ser preenchido posteriormente quando o resultado estiver disponível</p>
+              </div>
+
+              <!-- Campo de Resultado Qualitativo -->
+              <div id="resultado_qualitativo" style="display: none;">
+                <label class="block text-sm font-semibold text-gray-700 mb-3">Resultado do Exame</label>
+                <div class="grid grid-cols-2 gap-4">
+                  <button type="button" onclick="selectResultado('Presente')" id="btn_presente" class="resultado-btn flex flex-col items-center justify-center p-6 rounded-xl border-3 border-gray-300 bg-white hover:border-green-400 hover:bg-green-50 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-green-200">
+                    <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                      <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                      </svg>
+                    </div>
+                    <span class="text-lg font-bold text-gray-700">Presente</span>
+                    <span class="text-xs text-gray-500 mt-1">Detectado</span>
+                  </button>
+
+                  <button type="button" onclick="selectResultado('Ausente')" id="btn_ausente" class="resultado-btn flex flex-col items-center justify-center p-6 rounded-xl border-3 border-gray-300 bg-white hover:border-red-400 hover:bg-red-50 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-red-200">
+                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-3">
+                      <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                      </svg>
+                    </div>
+                    <span class="text-lg font-bold text-gray-700">Ausente</span>
+                    <span class="text-xs text-gray-500 mt-1">Não detectado</span>
+                  </button>
+                </div>
+                <p class="mt-3 text-xs text-gray-500 text-center">Selecione o resultado do exame qualitativo</p>
+              </div>
+
+              <div>
+                <%= form.label :observacoes, "Observações", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+                <%= form.text_area :observacoes, rows: 4, class: "mt-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-2 border-gray-300 rounded-lg px-4 py-3 transition", placeholder: "Observações sobre o exame..." %>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="flex justify-end">
-          <%= link_to "Cancelar", paciente_path(@paciente), class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-          <%= form.submit "Adicionar Exame", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        <div class="flex justify-end gap-3">
+          <%= link_to "Cancelar", paciente_path(@paciente), class: "px-6 py-3 border-2 border-gray-300 rounded-lg shadow-sm text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition" %>
+          <%= form.submit "Adicionar Exame", class: "px-6 py-3 border-2 border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition" %>
         </div>
       <% end %>
     </div>
   </div>
-</div> 
+</div>
+
+<style>
+.border-3 {
+  border-width: 3px;
+}
+
+.resultado-btn.selected {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.resultado-btn.selected#btn_presente {
+  border-color: #10b981;
+  background-color: #d1fae5;
+}
+
+.resultado-btn.selected#btn_ausente {
+  border-color: #ef4444;
+  background-color: #fee2e2;
+}
+</style>
+
+<script>
+  let selectedResultado = null;
+
+  function selectResultado(valor) {
+    selectedResultado = valor;
+    document.getElementById('resultado_hidden').value = valor;
+    
+    // Remover seleção de todos os botões
+    document.querySelectorAll('.resultado-btn').forEach(btn => {
+      btn.classList.remove('selected');
+    });
+    
+    // Adicionar seleção ao botão clicado
+    if (valor === 'Presente') {
+      document.getElementById('btn_presente').classList.add('selected');
+    } else {
+      document.getElementById('btn_ausente').classList.add('selected');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const exameSelect = document.getElementById('exame_select');
+    const resultadoQuantitativo = document.getElementById('resultado_quantitativo');
+    const resultadoQualitativo = document.getElementById('resultado_qualitativo');
+    const resultadoNumero = document.getElementById('resultado_numero');
+    const resultadoHidden = document.getElementById('resultado_hidden');
+    
+    // Dados dos exames com seus tipos
+    const examesData = <%= raw @exames.map { |e| { id: e.id, tipo: e.tipo } }.to_json %>;
+    
+    function toggleResultadoField() {
+      const exameId = parseInt(exameSelect.value);
+      const exame = examesData.find(e => e.id === exameId);
+      
+      // Limpar seleção anterior
+      selectedResultado = null;
+      document.querySelectorAll('.resultado-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      resultadoHidden.value = '';
+      resultadoNumero.value = '';
+      
+      if (exame && exame.tipo === 'qualitativo') {
+        // Mostrar campo qualitativo, esconder quantitativo
+        resultadoQuantitativo.style.display = 'none';
+        resultadoQualitativo.style.display = '';
+        resultadoNumero.removeAttribute('name');
+      } else {
+        // Mostrar campo quantitativo, esconder qualitativo
+        resultadoQuantitativo.style.display = '';
+        resultadoQualitativo.style.display = 'none';
+        resultadoNumero.setAttribute('name', 'exame_paciente[resultado]');
+      }
+    }
+    
+    if (exameSelect) {
+      exameSelect.addEventListener('change', toggleResultadoField);
+      toggleResultadoField();
+    }
+  });
+</script>
