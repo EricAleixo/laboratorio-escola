@@ -92,50 +92,55 @@ class ExamePacientesController < ApplicationController
   end
 
   def create
-    @exame_paciente = ExamePaciente.new(exame_paciente_params)
-    @exames = Exame.ativos.order(:nome)
+  @exame_paciente = ExamePaciente.new(exame_paciente_params)
+  @exames = Exame.ativos.order(:nome)
+  
+  # Se o exame for qualitativo e vier resultado_qualitativo, usar ele como resultado
+  if params[:exame_paciente][:resultado_qualitativo].present?
+    @exame_paciente.resultado = params[:exame_paciente][:resultado_qualitativo]
+  end
+  
+  # Verifica se é um paciente existente ou novo
+  if params[:exame_paciente][:novo_paciente].present?
+    # Criação de novo paciente
+    paciente_temp = Paciente.new(params[:exame_paciente][:novo_paciente].permit(:nome, :data_nascimento, :sexo))
     
-    # Verifica se é um paciente existente ou novo
-    if params[:exame_paciente][:novo_paciente].present?
-      # Criação de novo paciente
-      paciente_temp = Paciente.new(params[:exame_paciente][:novo_paciente].permit(:nome, :data_nascimento, :sexo))
+    unless paciente_temp.valid?
+      paciente_temp.errors.full_messages.each { |msg| @exame_paciente.errors.add(:base, "Paciente: #{msg}") }
+      return render :new, status: :unprocessable_entity
+    end
+    
+    ActiveRecord::Base.transaction do
+      paciente = Paciente.create!(params[:exame_paciente][:novo_paciente].permit(:nome, :data_nascimento, :sexo))
+      @exame_paciente.paciente_id = paciente.id
       
-      unless paciente_temp.valid?
-        paciente_temp.errors.full_messages.each { |msg| @exame_paciente.errors.add(:base, "Paciente: #{msg}") }
-        return render :new, status: :unprocessable_entity
-      end
-      
-      ActiveRecord::Base.transaction do
-        paciente = Paciente.create!(params[:exame_paciente][:novo_paciente].permit(:nome, :data_nascimento, :sexo))
-        @exame_paciente.paciente_id = paciente.id
-        
-        unless @exame_paciente.valid?
-          raise ActiveRecord::Rollback
-        end
-        
-        unless @exame_paciente.save
-          raise ActiveRecord::Rollback
-        end
-      end
-    else
-      # Paciente existente (vindo do formulário de adicionar exame)
       unless @exame_paciente.valid?
-        return render :new, status: :unprocessable_entity
+        raise ActiveRecord::Rollback
       end
       
       unless @exame_paciente.save
-        return render :new, status: :unprocessable_entity
+        raise ActiveRecord::Rollback
       end
     end
-    
-    # Redireciona baseado no contexto
-    if params[:exame_paciente][:novo_paciente].present?
-      # Novo paciente - redireciona para o exame
-      redirect_to @exame_paciente, notice: 'Exame do paciente criado com sucesso.'
-    else
-      # Paciente existente - redireciona para o paciente
-      redirect_to paciente_path(@exame_paciente.paciente), notice: 'Exame adicionado com sucesso.'
+  else
+    # Paciente existente (vindo do formulário de adicionar exame)
+    unless @exame_paciente.valid?
+      return render :new, status: :unprocessable_entity
     end
+    
+    unless @exame_paciente.save
+      return render :new, status: :unprocessable_entity
+    end
+  end
+  
+  # Redireciona baseado no contexto
+  if params[:exame_paciente][:novo_paciente].present?
+    # Novo paciente - redireciona para o exame
+    redirect_to @exame_paciente, notice: 'Exame do paciente criado com sucesso.'
+  else
+    # Paciente existente - redireciona para o paciente
+    redirect_to paciente_path(@exame_paciente.paciente), notice: 'Exame adicionado com sucesso.'
+  end
   rescue ActiveRecord::Rollback
     render :new, status: :unprocessable_entity
   rescue ActiveRecord::RecordInvalid => e
@@ -148,6 +153,11 @@ class ExamePacientesController < ApplicationController
   end
 
   def update
+    # Se o exame for qualitativo e vier resultado_qualitativo, usar ele como resultado
+    if params[:exame_paciente][:resultado_qualitativo].present?
+      @exame_paciente.resultado = params[:exame_paciente][:resultado_qualitativo]
+    end
+    
     if @exame_paciente.update(exame_paciente_params)
       redirect_to @exame_paciente, notice: 'Exame do paciente atualizado com sucesso.'
     else

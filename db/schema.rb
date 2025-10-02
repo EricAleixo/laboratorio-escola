@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_21_054500) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_02_085838) do
   create_table "exame_pacientes", force: :cascade do |t|
     t.integer "paciente_id", null: false
     t.integer "exame_id", null: false
     t.date "data_exame", null: false
-    t.decimal "resultado", precision: 10, scale: 2, null: false
+    t.string "resultado"
     t.text "observacoes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

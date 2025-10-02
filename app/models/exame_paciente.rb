@@ -3,11 +3,11 @@ class ExamePaciente < ApplicationRecord
   belongs_to :exame
   
   validates :data_exame, presence: true
-  validates :resultado, numericality: { greater_than: 0 }, allow_blank: true
   validates :observacoes, length: { maximum: 500 }
   
   validate :data_exame_nao_futura
   validate :paciente_maior_que_data_nascimento
+  validate :resultado_valido
 
   def unidade_referencia
     idade_paciente = paciente.idade
@@ -29,10 +29,19 @@ class ExamePaciente < ApplicationRecord
   # Retorna :abaixo, :normal ou :acima
   def situacao_resultado
     return :indefinido unless resultado.present?
+    
+    # Se for qualitativo, retorna baseado em Presente/Ausente
+    if exame.tipo == 'qualitativo'
+      return resultado == 'Presente' ? :presente : :ausente
+    end
+    
+    # Para quantitativo, usa a lógica original
     ref = unidade_referencia
     return :indefinido unless ref
-    return :abaixo if resultado < ref.valor_minimo
-    return :acima if resultado > ref.valor_maximo
+    
+    resultado_numerico = resultado.to_f
+    return :abaixo if resultado_numerico < ref.valor_minimo
+    return :acima if resultado_numerico > ref.valor_maximo
     :normal
   end
 
@@ -49,4 +58,25 @@ class ExamePaciente < ApplicationRecord
       errors.add(:data_exame, "não pode ser anterior à data de nascimento do paciente")
     end
   end
-end 
+  
+  def resultado_valido
+    return if resultado.blank? # Permite resultado em branco
+    
+    if exame.tipo == 'qualitativo'
+      # Para exames qualitativos, só aceita "Presente" ou "Ausente"
+      unless ['Presente', 'Ausente'].include?(resultado)
+        errors.add(:resultado, "deve ser 'Presente' ou 'Ausente' para exames qualitativos")
+      end
+    else
+      # Para exames quantitativos, valida se é numérico e maior que 0
+      unless resultado.to_s.match?(/\A-?\d+(\.\d+)?\z/)
+        errors.add(:resultado, "deve ser um número válido para exames quantitativos")
+        return
+      end
+      
+      if resultado.to_f <= 0
+        errors.add(:resultado, "deve ser maior que 0")
+      end
+    end
+  end
+end
