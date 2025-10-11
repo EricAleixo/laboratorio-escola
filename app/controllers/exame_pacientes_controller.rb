@@ -1,5 +1,5 @@
 class ExamePacientesController < ApplicationController
-  before_action :set_exame_paciente, only: [:show, :edit, :update, :destroy]
+  before_action :set_exame_paciente, only: [:show, :edit, :update, :destroy, :atualizar_resultado]
 
   def index
     # Buscar todos os pacientes primeiro
@@ -91,60 +91,91 @@ class ExamePacientesController < ApplicationController
     @exames = Exame.ativos.order(:nome)
   end
 
-  def create
-  @exame_paciente = ExamePaciente.new(exame_paciente_params)
-  @exames = Exame.ativos.order(:nome)
-  
-  # Se o exame for qualitativo e vier resultado_qualitativo, usar ele como resultado
-  if params[:exame_paciente][:resultado_qualitativo].present?
-    @exame_paciente.resultado = params[:exame_paciente][:resultado_qualitativo]
+  def registrar_resultados
+    @paciente = Paciente.find(params[:paciente_id])
+    @exame_pacientes = @paciente.exame_pacientes.includes(:exame).order(:id)
   end
-  
-  # Verifica se é um paciente existente ou novo
-  if params[:exame_paciente][:novo_paciente].present?
-    # Criação de novo paciente
-    paciente_temp = Paciente.new(params[:exame_paciente][:novo_paciente].permit(:nome, :data_nascimento, :sexo))
+
+  def atualizar_resultado
+    if @exame_paciente.update(
+      resultado: params[:resultado],
+      observacoes: params[:observacoes]
+    )
+      render json: { success: true }
+    else
+      render json: { success: false, errors: @exame_paciente.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def create
+    @exames = Exame.ativos.order(:nome)
+    
+    # Validar se foram selecionados exames
+    exame_ids = params[:exame_paciente][:exame_ids]&.reject(&:blank?)
+    
+    if exame_ids.blank?
+      @exame_paciente = ExamePaciente.new
+      @exame_paciente.errors.add(:base, "Selecione pelo menos um exame")
+      return render :new, status: :unprocessable_entity
+    end
+    
+    # Validar dados do paciente
+    paciente_params = params[:exame_paciente][:novo_paciente]
+    if paciente_params.blank?
+      @exame_paciente = ExamePaciente.new
+      @exame_paciente.errors.add(:base, "Dados do paciente são obrigatórios")
+      return render :new, status: :unprocessable_entity
+    end
+    
+    paciente_temp = Paciente.new(paciente_params.permit(:nome, :data_nascimento, :sexo))
     
     unless paciente_temp.valid?
+      @exame_paciente = ExamePaciente.new
       paciente_temp.errors.full_messages.each { |msg| @exame_paciente.errors.add(:base, "Paciente: #{msg}") }
       return render :new, status: :unprocessable_entity
     end
     
+    # Criar paciente e exames em uma transação
     ActiveRecord::Base.transaction do
-      paciente = Paciente.create!(params[:exame_paciente][:novo_paciente].permit(:nome, :data_nascimento, :sexo))
-      @exame_paciente.paciente_id = paciente.id
+      # Criar o paciente
+      paciente = Paciente.create!(paciente_params.permit(:nome, :data_nascimento, :sexo))
       
-      unless @exame_paciente.valid?
-        raise ActiveRecord::Rollback
+      # Criar um ExamePaciente para cada exame selecionado
+      exames_criados = 0
+      data_atual = Date.current
+      
+      exame_ids.each do |exame_id|
+        exame_paciente = ExamePaciente.new(
+          paciente_id: paciente.id,
+          exame_id: exame_id,
+          data_exame: data_atual
+        )
+        
+        unless exame_paciente.save
+          # Se falhar, fazer rollback e mostrar erro
+          exame_paciente.errors.full_messages.each do |msg|
+            @exame_paciente = ExamePaciente.new
+            @exame_paciente.errors.add(:base, msg)
+          end
+          raise ActiveRecord::Rollback
+        end
+        
+        exames_criados += 1
       end
       
-      unless @exame_paciente.save
-        raise ActiveRecord::Rollback
-      end
-    end
-  else
-    # Paciente existente (vindo do formulário de adicionar exame)
-    unless @exame_paciente.valid?
-      return render :new, status: :unprocessable_entity
+      # Sucesso - redirecionar para tela de registro de resultados
+      redirect_to registrar_resultados_exame_pacientes_path(paciente_id: paciente.id),
+                  notice: "Paciente cadastrado com sucesso! Agora registre os resultados dos exames."
+      return
     end
     
-    unless @exame_paciente.save
-      return render :new, status: :unprocessable_entity
-    end
-  end
-  
-  # Redireciona baseado no contexto
-  if params[:exame_paciente][:novo_paciente].present?
-    # Novo paciente - redireciona para o exame
-    redirect_to @exame_paciente, notice: 'Exame do paciente criado com sucesso.'
-  else
-    # Paciente existente - redireciona para o paciente
-    redirect_to paciente_path(@exame_paciente.paciente), notice: 'Exame adicionado com sucesso.'
-  end
-  rescue ActiveRecord::Rollback
+    # Se chegou aqui, houve rollback
+    @exame_paciente ||= ExamePaciente.new
     render :new, status: :unprocessable_entity
+    
   rescue ActiveRecord::RecordInvalid => e
-    e.record.errors.full_messages.each { |msg| @exame_paciente.errors.add(:base, msg) }
+    @exame_paciente = ExamePaciente.new
+    @exame_paciente.errors.add(:base, e.message)
     render :new, status: :unprocessable_entity
   end
 

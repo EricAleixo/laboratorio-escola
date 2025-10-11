@@ -1,212 +1,417 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-xl font-semibold text-gray-900">Exames de Pacientes</h1>
-      <p class="mt-2 text-sm text-gray-700">Lista de todos os exames realizados pelos pacientes.</p>
-    </div>
-    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-      <%= link_to "Novo Exame", new_exame_paciente_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
-      <%= link_to "Adicionar a Paciente Existente", pacientes_path, class: "ml-3 inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
-    </div>
-  </div>
-  
-  <!-- Barra de Pesquisa -->
-  <div class="mt-6 animate-search">
-    <%= form_with(url: exame_pacientes_path, method: :get, local: true, class: "space-y-4") do |form| %>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="relative">
-          <label for="search_paciente" class="block text-sm font-medium text-gray-700 mb-2">
-            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-            </svg>
-            Buscar por Paciente
-          </label>
-          <%= form.text_field :search_paciente, 
-              value: params[:search_paciente], 
-              placeholder: "Digite o nome do paciente...", 
-              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 transition-all duration-200 hover:border-gray-400" %>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+            <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-2.5 shadow-lg">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            Exames de Pacientes
+          </h1>
+          <p class="mt-2 text-sm text-gray-600">Gerencie e acompanhe todos os exames realizados</p>
         </div>
         
-        <div class="relative">
-          <label for="search_exame" class="block text-sm font-medium text-gray-700 mb-2">
-            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-            Buscar por Exame
-          </label>
-          <%= form.text_field :search_exame, 
-              value: params[:search_exame], 
-              placeholder: "Digite o nome do exame...", 
-              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 transition-all duration-200 hover:border-gray-400" %>
-        </div>
+        <%= link_to new_exame_paciente_path, class: "inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span>Novo Cadastro</span>
+        <% end %>
       </div>
-      
-      <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <%= form.submit "Buscar", class: "inline-flex items-center justify-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 hover:scale-105 btn-loading" %>
-        <%= link_to "Limpar Filtros", exame_pacientes_path, class: "inline-flex items-center justify-center px-6 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 hover:scale-105" %>
-        
+    </div>
+
+    <!-- Filtros de Busca -->
+    <div class="mb-6 animate-slide-in">
+      <%= form_with(url: exame_pacientes_path, method: :get, local: true, class: "bg-white rounded-2xl shadow-sm border border-gray-200 p-6") do |form| %>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="bg-blue-100 rounded-lg p-2">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">Filtros de Busca</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <!-- Busca por Paciente -->
+          <div>
+            <label for="search_paciente" class="block text-sm font-medium text-gray-700 mb-2">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                Buscar por Paciente
+              </span>
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+              </span>
+              <%= form.text_field :search_paciente, 
+                  value: params[:search_paciente], 
+                  placeholder: "Digite o nome do paciente...", 
+                  class: "block w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400" %>
+            </div>
+          </div>
+
+          <!-- Busca por Exame -->
+          <div>
+            <label for="search_exame" class="block text-sm font-medium text-gray-700 mb-2">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                Buscar por Exame
+              </span>
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+              </span>
+              <%= form.text_field :search_exame, 
+                  value: params[:search_exame], 
+                  placeholder: "Digite o nome do exame...", 
+                  class: "block w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Badges de Filtros Ativos -->
         <% if params[:search_paciente].present? || params[:search_exame].present? %>
-          <div class="flex items-center space-x-2 text-sm text-gray-600">
-            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              Filtros ativos
-            </span>
+          <div class="flex items-center gap-2 mb-4 p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-sm font-medium text-indigo-900">Filtros ativos:</span>
             <% if params[:search_paciente].present? %>
-              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                Paciente: <%= params[:search_paciente] %>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                <%= params[:search_paciente] %>
               </span>
             <% end %>
             <% if params[:search_exame].present? %>
-              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                Exame: <%= params[:search_exame] %>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                <%= params[:search_exame] %>
               </span>
             <% end %>
           </div>
         <% end %>
+
+        <!-- Botões -->
+        <div class="flex flex-wrap gap-3">
+          <%= form.submit "Buscar", class: "inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-all shadow-sm" %>
+          <%= link_to exame_pacientes_path, class: "inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-medium rounded-lg transition-all" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            <span>Limpar Filtros</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+     <% if @pacientes_com_exames.any? %>
+      <div class="my-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div class="flex items-center gap-3">
+            <div class="bg-indigo-100 rounded-lg p-3">
+              <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Total de Pacientes</p>
+              <p class="text-2xl font-bold text-gray-900"><%= @pacientes_com_exames.count %></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div class="flex items-center gap-3">
+            <div class="bg-blue-100 rounded-lg p-3">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Total de Exames</p>
+              <p class="text-2xl font-bold text-gray-900"><%= @pacientes_com_exames.values.flatten.count %></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div class="flex items-center gap-3">
+            <div class="bg-green-100 rounded-lg p-3">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Média por Paciente</p>
+              <p class="text-2xl font-bold text-gray-900">
+                <%= (@pacientes_com_exames.values.flatten.count.to_f / @pacientes_com_exames.count).round(1) %>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
-  </div>
-  
-  <div class="mt-8 flex flex-col">
-    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-300">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Paciente</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Qtd. Exames</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Último Exame</th>
-                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                  <span class="sr-only">Expandir</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 bg-white">
-              <% @pacientes_com_exames.each_with_index do |(paciente, exames), index| %>
-                <tr class="cursor-pointer hover:bg-gray-50" onclick="toggleExames(<%= index %>)">
-                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                    <div class="flex items-center">
-                      <svg id="arrow-<%= index %>" class="w-4 h-4 mr-2 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+
+    <!-- Lista de Pacientes -->
+    <div class="space-y-4">
+      <% @pacientes_com_exames.each_with_index do |(paciente, exames), index| %>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden transition-all hover:shadow-md animate-fade-in" style="animation-delay: <%= index * 0.05 %>s">
+          <!-- Header do Paciente -->
+          <div class="p-5 cursor-pointer hover:bg-gray-50 transition-colors" onclick="toggleExames(<%= index %>)">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4 flex-1">
+                <!-- Avatar -->
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Info do Paciente -->
+                <div class="flex-1 min-w-0">
+                  <%= link_to paciente_path(paciente), onclick: "event.stopPropagation()", class: "text-lg font-semibold text-gray-900 hover:text-indigo-600 transition-colors" do %>
+                    <%= paciente.nome %>
+                  <% end %>
+                  <div class="flex items-center gap-4 mt-1 text-sm text-gray-600">
+                    <span class="flex items-center gap-1.5">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                       </svg>
-                      <%= link_to paciente.nome, paciente_path(paciente), class: "text-indigo-600 hover:text-indigo-900", onclick: "event.stopPropagation()" %>
-                    </div>
-                    <div class="text-xs text-gray-500 ml-6">
-                      <%= paciente.idade %> anos, <%= paciente.sexo == 'M' ? 'M' : 'F' %>
-                    </div>
-                  </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      <%= exames.count %> exame<%= exames.count != 1 ? 's' : '' %>
+                      <%= paciente.idade %> anos
                     </span>
-                  </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <span class="flex items-center gap-1.5">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                      </svg>
+                      <%= paciente.sexo == 'M' ? 'Masculino' : 'Feminino' %>
+                    </span>
                     <% ultimo_exame = exames.max_by(&:data_exame) %>
-                    <%= ultimo_exame&.data_exame&.strftime("%d/%m/%Y") || 'N/A' %>
-                  </td>
-                  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <span class="text-gray-400">Clique para expandir</span>
-                  </td>
-                </tr>
-                
-                <% exames.each do |exame_paciente| %>
-                  <tr id="exame-<%= index %>-<%= exame_paciente.id %>" class="exames-<%= index %> hidden bg-gray-50">
-                    <td class="whitespace-nowrap py-3 pl-12 pr-3 text-sm text-gray-600 sm:pl-14">
-                      <div class="flex items-center">
-                        <% 
-                          situacao = exame_paciente.situacao_resultado 
-                          tipo_exame = exame_paciente.exame.tipo
-                        %>
+                    <span class="flex items-center gap-1.5">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                      </svg>
+                      Último: <%= ultimo_exame&.data_exame&.strftime("%d/%m/%Y") || 'N/A' %>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Badge de Exames -->
+                <div class="flex items-center gap-3">
+                  <div class="flex items-center gap-2 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-lg">
+                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    <span class="text-sm font-semibold text-indigo-900"><%= exames.count %></span>
+                    <span class="text-xs text-indigo-700">exame<%= exames.count != 1 ? 's' : '' %></span>
+                  </div>
+
+                  <!-- Botão Adicionar Exame -->
+                  <%= link_to paciente_adicionar_exame_path(paciente), onclick: "event.stopPropagation()", class: "inline-flex items-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" do %>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span class="hidden sm:inline">Adicionar</span>
+                  <% end %>
+
+                  <!-- Seta -->
+                  <svg id="arrow-<%= index %>" class="w-5 h-5 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lista de Exames (Expansível) -->
+          <div id="exames-container-<%= index %>" class="exames-container hidden border-t border-gray-200">
+            <div class="p-5 bg-gray-50 space-y-3">
+              <% exames.each do |exame_paciente| %>
+                <div class="bg-white rounded-lg border border-gray-200 p-4 cursor-pointer hover:shadow-md transition-all">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4 flex-1">
+                      <!-- Indicador de Status -->
+                      <% 
+                        situacao = exame_paciente.situacao_resultado 
+                        tipo_exame = exame_paciente.exame.tipo
+                      %>
+                      <div class="flex-shrink-0">
                         <% if tipo_exame == 'qualitativo' %>
-                          <div class="w-2 h-2 rounded-full mr-3 <%= situacao == :presente ? 'bg-green-500' : 'bg-red-500' %>"></div>
+                          <div class="w-10 h-10 rounded-full flex items-center justify-center <%= situacao == :presente ? 'bg-green-100' : 'bg-red-100' %>">
+                            <svg class="w-5 h-5 <%= situacao == :presente ? 'text-green-600' : 'text-red-600' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <% if situacao == :presente %>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                              <% else %>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                              <% end %>
+                            </svg>
+                          </div>
                         <% else %>
-                          <div class="w-2 h-2 rounded-full mr-3 <%= case situacao when :normal then 'bg-green-500' when :abaixo then 'bg-yellow-500' when :acima then 'bg-red-500' else 'bg-gray-400' end %>"></div>
+                          <% 
+                            cor_bg = case situacao 
+                              when :normal then 'bg-green-100'
+                              when :acima then 'bg-red-100'
+                              when :abaixo then 'bg-yellow-100'
+                              else 'bg-gray-100'
+                            end
+                            cor_text = case situacao 
+                              when :normal then 'text-green-600'
+                              when :acima then 'text-red-600'
+                              when :abaixo then 'text-yellow-600'
+                              else 'text-gray-600'
+                            end
+                          %>
+                          <div class="w-10 h-10 rounded-full flex items-center justify-center <%= cor_bg %>">
+                            <svg class="w-5 h-5 <%= cor_text %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                          </div>
                         <% end %>
-                        <%= link_to "#{exame_paciente.exame.nome} - #{exame_paciente.resultado}", exame_path(exame_paciente.exame), class: "text-indigo-600 hover:text-indigo-900" %>
                       </div>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
-                      <%= exame_paciente.data_exame&.strftime("%d/%m/%Y") %>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-3 text-sm">
-                      <% if tipo_exame == 'qualitativo' %>
-                        <% if situacao == :presente %>
-                          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border bg-green-100 text-green-800 border-green-200">
-                            <span class="mr-1">✓</span>
-                            Presente
+
+                      <!-- Info do Exame -->
+                      <div class="flex-1 min-w-0">
+                        <%= link_to exame_path(exame_paciente.exame), class: "text-sm font-semibold text-gray-900 hover:text-indigo-600 transition-colors" do %>
+                          <%= exame_paciente.exame.nome %>
+                        <% end %>
+                        <div class="flex items-center gap-3 mt-1">
+                          <span class="text-xs text-gray-500 flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <%= exame_paciente.data_exame&.strftime("%d/%m/%Y") %>
                           </span>
+                          <span class="text-xs font-medium text-gray-900">
+                            Resultado: <span class="text-indigo-600"><%= exame_paciente.resultado %></span>
+                          </span>
+                        </div>
+                      </div>
+
+                      <!-- Badge de Status -->
+                      <div class="flex items-center gap-3">
+                        <% if tipo_exame == 'qualitativo' %>
+                          <% if situacao == :presente %>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                              </svg>
+                              Presente
+                            </span>
+                          <% else %>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
+                              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                              </svg>
+                              Ausente
+                            </span>
+                          <% end %>
                         <% else %>
-                          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border bg-red-100 text-red-800 border-red-200">
-                            <span class="mr-1">✗</span>
-                            Ausente
+                          <% 
+                            if situacao == :normal
+                              cor_classe = 'bg-green-100 text-green-800 border-green-200'
+                              icone_path = 'M5 13l4 4L19 7'
+                              texto = 'Normal'
+                            elsif situacao == :acima
+                              cor_classe = 'bg-red-100 text-red-800 border-red-200'
+                              icone_path = 'M5 10l7-7m0 0l7 7m-7-7v18'
+                              texto = 'Acima'
+                            elsif situacao == :abaixo
+                              cor_classe = 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                              icone_path = 'M19 14l-7 7m0 0l-7-7m7 7V3'
+                              texto = 'Abaixo'
+                            else
+                              cor_classe = 'bg-gray-100 text-gray-800 border-gray-200'
+                              icone_path = 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+                              texto = 'Sem ref.'
+                            end
+                          %>
+                          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border <%= cor_classe %>">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= icone_path %>"/>
+                            </svg>
+                            <%= texto %>
                           </span>
                         <% end %>
-                      <% else %>
-                        <% 
-                          if situacao == :normal
-                            cor_classe = 'bg-green-100 text-green-800 border-green-200'
-                            icone = '✓'
-                            texto = 'Dentro do esperado'
-                          elsif situacao == :acima
-                            cor_classe = 'bg-red-100 text-red-800 border-red-200'
-                            icone = '↑'
-                            texto = 'Acima do esperado'
-                          elsif situacao == :abaixo
-                            cor_classe = 'bg-yellow-100 text-yellow-800 border-yellow-200'
-                            icone = '↓'
-                            texto = 'Abaixo do esperado'
-                          else
-                            cor_classe = 'bg-gray-100 text-gray-800 border-gray-200'
-                            icone = '•'
-                            texto = 'Sem referência'
-                          end
-                        %>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border <%= cor_classe %>">
-                          <span class="mr-1"><%= icone %></span>
-                          <%= texto %>
-                        </span>
-                      <% end %>
-                    </td>
-                    <td class="relative whitespace-nowrap py-3 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <div class="flex space-x-2 justify-end">
-                        <%= link_to exame_paciente_path(exame_paciente), class: "text-indigo-600 hover:text-indigo-900" do %>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                      </div>
+
+                      <!-- Ações -->
+                      <div class="flex items-center gap-2">
+                        <%= link_to exame_paciente_path(exame_paciente), class: "p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" do %>
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                           </svg>
                         <% end %>
-                        <%= link_to edit_exame_paciente_path(exame_paciente), class: "text-indigo-600 hover:text-indigo-900" do %>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                        <%= link_to edit_exame_paciente_path(exame_paciente), class: "p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" do %>
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                           </svg>
                         <% end %>
                         <%= button_to exame_paciente_path(exame_paciente), 
                             method: :delete, 
-                            data: { confirm: "Tem certeza?" }, 
-                            class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer",
+                            data: { confirm: "Tem certeza que deseja excluir este exame?" }, 
+                            class: "p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors",
                             form: { style: "display: inline;" } do %>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                           </svg>
                         <% end %>
                       </div>
-                    </td>
-                  </tr>
-                <% end %>
+                    </div>
+                  </div>
+                </div>
               <% end %>
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      <% end %>
+
+      <% if @pacientes_com_exames.empty? %>
+        <div class="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-200">
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Nenhum resultado encontrado</h3>
+          <p class="text-sm text-gray-600 mb-6">Não há pacientes ou exames correspondentes aos filtros aplicados.</p>
+          <%= link_to exame_pacientes_path, class: "inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-all" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            <span>Limpar Filtros</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>  
   </div>
 </div>
 
 <style>
-@keyframes fadeInUp {
+@keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -214,18 +419,7 @@
   }
 }
 
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideIn {
+@keyframes slide-in {
   from {
     opacity: 0;
     transform: translateX(-20px);
@@ -236,57 +430,57 @@
   }
 }
 
-.animate-search {
-  animation: slideIn 0.8s ease-out 0.2s both;
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out both;
 }
 
-.btn-loading {
-  position: relative;
+.animate-slide-in {
+  animation: slide-in 0.6s ease-out;
+}
+
+.exames-container {
+  max-height: 0;
   overflow: hidden;
+  transition: max-height 0.4s ease-out;
 }
 
-.btn-loading::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  transition: left 0.6s;
-}
-
-.btn-loading:hover::after {
-  left: 100%;
+.exames-container.show {
+  max-height: 2000px;
 }
 </style>
 
 <script>
 function toggleExames(index) {
-  const exameRows = document.querySelectorAll('.exames-' + index);
-  const arrow = document.getElementById('arrow-' + index);
+  const container = document.getElementById(`exames-container-${index}`);
+  const arrow = document.getElementById(`arrow-${index}`);
   
-  exameRows.forEach((row, i) => {
-    if (row.classList.contains('hidden')) {
-      row.classList.remove('hidden');
-      setTimeout(() => {
-        row.style.animation = `fadeInUp 0.4s ease-out ${i * 0.1}s both`;
-      }, 10);
-      arrow.style.transform = 'rotate(90deg)';
-    } else {
-      row.style.animation = `fadeInUp 0.3s ease-out reverse`;
-      setTimeout(() => {
-        row.classList.add('hidden');
-      }, 300);
-      arrow.style.transform = 'rotate(0deg)';
-    }
-  });
+  if (container.classList.contains('hidden')) {
+    container.classList.remove('hidden');
+    setTimeout(() => {
+      container.classList.add('show');
+    }, 10);
+    arrow.style.transform = 'rotate(180deg)';
+  } else {
+    container.classList.remove('show');
+    arrow.style.transform = 'rotate(0deg)';
+    setTimeout(() => {
+      container.classList.add('hidden');
+    }, 400);
+  }
 }
 
+// Animação de entrada
 document.addEventListener('DOMContentLoaded', function() {
-  const tableRows = document.querySelectorAll('tbody tr:not([class*="exames-"])');
-  tableRows.forEach((row, index) => {
-    row.style.animation = `fadeInUp 0.5s ease-out ${index * 0.1}s both`;
+  const cards = document.querySelectorAll('.animate-fade-in');
+  cards.forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.05}s`;
   });
 });
+
+// Scroll suave ao expandir
+function smoothScroll(element) {
+  const yOffset = -20;
+  const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+}
 </script>

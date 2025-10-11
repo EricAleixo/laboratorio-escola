@@ -42,7 +42,19 @@ Rails.application.routes.draw do
   resources :pacientes do
     resources :exame_pacientes
     get "adicionar_exame" => "pacientes#adicionar_exame", as: :adicionar_exame
+
+    member do
+      get :adicionar_exame
+      post :criar_exames
+    end
   end
-  resources :exame_pacientes
+  resources :exame_pacientes do
+  member do
+    patch :atualizar_resultado
+  end
+  collection do
+    get :registrar_resultados
+  end
+end
   post "confirmar_emissao/:paciente_id", to: "exame_pacientes#confirmar_emissao", as: :confirmar_emissao
 end

@@ -1,5 +1,5 @@
 class PacientesController < ApplicationController
-  before_action :set_paciente, only: [:show, :edit, :update, :destroy, :adicionar_exame]
+  before_action :set_paciente, only: [:show, :edit, :update, :destroy, :adicionar_exame, :criar_exames]
 
   def index
     @pacientes = Paciente.order(:nome)
@@ -45,6 +45,58 @@ class PacientesController < ApplicationController
   def adicionar_exame
     @exame_paciente = ExamePaciente.new(paciente: @paciente)
     @exames = Exame.ativos.order(:nome)
+  end
+
+  def criar_exames
+    @exames = Exame.ativos.order(:nome)
+    
+    # Validar se foram selecionados exames
+    exame_ids = params[:exame_paciente][:exame_ids]&.reject(&:blank?)
+    
+    if exame_ids.blank?
+      @exame_paciente = ExamePaciente.new(paciente: @paciente)
+      @exame_paciente.errors.add(:base, "Selecione pelo menos um exame")
+      return render :adicionar_exame, status: :unprocessable_entity
+    end
+    
+    # Criar exames em uma transação
+    exames_criados = 0
+    data_atual = Date.current
+    
+    ActiveRecord::Base.transaction do
+      exame_ids.each do |exame_id|
+        exame_paciente = ExamePaciente.new(
+          paciente_id: @paciente.id,
+          exame_id: exame_id,
+          data_exame: data_atual
+        )
+        
+        unless exame_paciente.save
+          # Se falhar, fazer rollback e mostrar erro
+          @exame_paciente = ExamePaciente.new(paciente: @paciente)
+          exame_paciente.errors.full_messages.each do |msg|
+            @exame_paciente.errors.add(:base, msg)
+          end
+          raise ActiveRecord::Rollback
+        end
+        
+        exames_criados += 1
+      end
+      
+      # Sucesso - redirecionar para tela de registro de resultados
+      redirect_to registrar_resultados_exame_pacientes_path(paciente_id: @paciente.id),
+                  notice: "#{exames_criados} exame(s) adicionado(s) com sucesso! Agora registre os resultados."
+      return
+    end
+    
+    # Se chegou aqui, houve rollback
+    @exame_paciente ||= ExamePaciente.new(paciente: @paciente)
+    render :adicionar_exame, status: :unprocessable_entity
+    
+  rescue ActiveRecord::RecordInvalid => e
+    @exame_paciente = ExamePaciente.new(paciente: @paciente)
+    @exame_paciente.errors.add(:base, e.message)
+    render :adicionar_exame, status: :unprocessable_entity
   end
 
   private
