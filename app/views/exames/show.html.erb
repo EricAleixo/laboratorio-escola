@@ -1,176 +1,302 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="mb-6">
-    <%= link_to "Voltar para Exames", exames_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
-  </div>
-
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h3 class="text-lg leading-6 font-medium text-gray-900"><%= @exame.nome %></h3>
-          <p class="mt-1 max-w-2xl text-sm text-gray-500">Detalhes do exame</p>
-        </div>
-        <div class="flex space-x-3">
-          <%= link_to "Editar", edit_exame_path(@exame), class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-          <%= link_to "Excluir", exame_path(@exame), method: :delete, data: { confirm: "Tem certeza?" }, class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
-        </div>
-      </div>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Breadcrumb -->
+    <div class="mb-6">
+      <%= link_to exames_path, class: "inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 text-sm font-medium transition-colors" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        <span>Voltar para Exames</span>
+      <% end %>
     </div>
-    <div class="border-t border-gray-200">
-      <dl>
-        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Nome</dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @exame.nome %></dd>
-        </div>
-        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Descrição</dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-            <%= @exame.descricao.present? ? @exame.descricao : "Nenhuma descrição fornecida" %>
-          </dd>
-        </div>
-        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Tipo</dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-            <% if @exame.tipo == "quantitativo" %>
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 capitalize">
-                <%= @exame.tipo %>
-              </span>
-            <% else %>
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 capitalize">
-                <%= @exame.tipo %>
-              </span>
-            <% end %>
-          </dd>
-        </div>
-        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Status</dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+
+    <!-- Card Principal do Exame -->
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden mb-6">
+      <!-- Header com gradiente -->
+      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-6">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex items-center gap-4 flex-1 min-w-0">
+            <div class="flex-shrink-0 bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+              <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+              </svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h1 class="text-3xl font-bold text-white break-words"><%= @exame.nome %></h1>
+              <p class="text-indigo-100 text-sm mt-1">Detalhes do Exame</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 flex-shrink-0">
             <% if @exame.ativo? %>
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
                 Ativo
               </span>
             <% else %>
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
                 Inativo
               </span>
             <% end %>
-          </dd>
-        </div>
-      </dl>
-    </div>
-  </div>
-
-  <!-- Resultados Qualitativos -->
-  <% if @exame.tipo == 'qualitativo' %>
-    <div class="mt-8">
-      <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">Resultados Possíveis</h3>
-          <p class="mt-1 text-sm text-gray-500">Este é um exame qualitativo com resultados definidos.</p>
-        </div>
-        <div class="px-4 py-5 sm:p-6">
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div class="relative rounded-lg border border-green-200 bg-green-50 px-6 py-5 shadow-sm hover:border-green-300 transition">
-              <div class="flex items-center space-x-3">
-                <div class="flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-8 w-8 text-green-600">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  </svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <span class="absolute inset-0" aria-hidden="true"></span>
-                  <p class="text-base font-semibold text-green-900">Presente</p>
-                  <p class="text-sm text-green-700">Resultado positivo detectado</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="relative rounded-lg border border-red-200 bg-red-50 px-6 py-5 shadow-sm hover:border-red-300 transition">
-              <div class="flex items-center space-x-3">
-                <div class="flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-8 w-8 text-red-600">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  </svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <span class="absolute inset-0" aria-hidden="true"></span>
-                  <p class="text-base font-semibold text-red-900">Ausente</p>
-                  <p class="text-sm text-red-700">Resultado negativo ou não detectado</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
-    </div>
-  <% end %>
 
-  <!-- Unidades de Referência (apenas para exames quantitativos) -->
-  <% if @exame.tipo == 'quantitativo' %>
-    <div class="mt-8">
-      <div class="sm:flex sm:items-center">
-        <div class="sm:flex-auto">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">Unidades de Referência</h3>
-          <p class="mt-2 text-sm text-gray-700">Valores de referência para este exame.</p>
-        </div>
-        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <%= link_to "Adicionar Unidade de Referência", new_exame_unidade_referencia_path(@exame), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
-        </div>
-      </div>
-      
-      <div class="mt-6">
-        <% if @exame.unidade_referencias.any? %>
-          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Unidade</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Valor Mínimo</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Valor Máximo</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Faixa Etária | Sexo</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
-                <% @exame.unidade_referencias.each do |ref| %>
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                      <%= ref.unidade_medida.nome %> (<%= ref.unidade_medida.simbolo %>)
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= ref.valor_minimo %></td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= ref.valor_maximo %></td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <div class="flex flex-col">
-                        <span class="font-medium"><%= ref.faixa_etaria %></span>
-                        <span class="text-xs text-gray-400">
-                          <% case ref.sexo %>
-                          <% when 'M' %>
-                            Masculino
-                          <% when 'F' %>
-                            Feminino
-                          <% when 'A' %>
-                            Ambos
-                          <% end %>
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
+      <!-- Conteúdo -->
+      <div class="p-8">
+        <!-- Informações do Exame -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="bg-blue-100 rounded-lg p-2">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+              </div>
+              <p class="text-sm font-medium text-gray-600">Tipo de Exame</p>
+            </div>
+            <p class="text-xl font-bold text-gray-900">
+              <% if @exame.tipo == "quantitativo" %>
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-base font-semibold bg-green-100 text-green-800">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                  </svg>
+                  Quantitativo
+                </span>
+              <% else %>
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-base font-semibold bg-purple-100 text-purple-800">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Qualitativo
+                </span>
+              <% end %>
+            </p>
           </div>
-        <% else %>
-          <div class="text-center py-12 bg-white rounded-lg shadow">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+
+          <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-5 border border-purple-100">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="bg-purple-100 rounded-lg p-2">
+                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <p class="text-sm font-medium text-gray-600">Descrição</p>
+            </div>
+            <p class="text-sm text-gray-700 break-words">
+              <%= @exame.descricao.present? ? @exame.descricao : "Nenhuma descrição fornecida" %>
+            </p>
+          </div>
+        </div>
+
+        <!-- Ações -->
+        <div class="flex flex-wrap gap-3 pt-6 border-t border-gray-200">
+          <%= link_to edit_exame_path(@exame), class: "inline-flex items-center gap-2 px-4 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold rounded-lg transition-all shadow-sm" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhuma unidade de referência</h3>
-            <p class="mt-1 text-sm text-gray-500">Este exame ainda não possui unidades de referência cadastradas.</p>
-            <div class="mt-6">
-              <%= link_to "Adicionar primeira unidade", new_exame_unidade_referencia_path(@exame), class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-            </div>
-          </div>
-        <% end %>
+            <span>Editar Exame</span>
+          <% end %>
+
+          <%= button_to exame_path(@exame), 
+              method: :delete, 
+              data: { confirm: "Tem certeza que deseja excluir este exame?" }, 
+              class: "inline-flex items-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-lg transition-all shadow-sm",
+              form: { style: "display: inline;" } do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+            <span>Excluir Exame</span>
+          <% end %>
+        </div>
       </div>
     </div>
-  <% end %>
+
+    <!-- Resultados Qualitativos -->
+    <% if @exame.tipo == 'qualitativo' %>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div class="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-5 border-b border-gray-200">
+          <div class="flex items-center gap-3">
+            <div class="bg-purple-100 rounded-lg p-2">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-gray-900">Resultados Possíveis</h2>
+              <p class="text-sm text-gray-600">Este é um exame qualitativo com resultados pré-definidos</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Presente -->
+            <div class="group relative rounded-2xl border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50 p-6 hover:border-green-400 hover:shadow-lg transition-all">
+              <div class="flex items-center gap-4">
+                <div class="flex-shrink-0 bg-green-100 rounded-full p-3">
+                  <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xl font-bold text-green-900">Presente</p>
+                  <p class="text-sm text-green-700 mt-1">Resultado positivo detectado</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ausente -->
+            <div class="group relative rounded-2xl border-2 border-red-200 bg-gradient-to-br from-red-50 to-pink-50 p-6 hover:border-red-400 hover:shadow-lg transition-all">
+              <div class="flex items-center gap-4">
+                <div class="flex-shrink-0 bg-red-100 rounded-full p-3">
+                  <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xl font-bold text-red-900">Ausente</p>
+                  <p class="text-sm text-red-700 mt-1">Resultado negativo ou não detectado</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Unidades de Referência (apenas para exames quantitativos) -->
+    <% if @exame.tipo == 'quantitativo' %>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-5 border-b border-gray-200">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="bg-blue-100 rounded-lg p-2">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-gray-900">Unidades de Referência</h2>
+                <p class="text-sm text-gray-600"><%= @exame.unidade_referencias.count %> unidade(s) cadastrada(s)</p>
+              </div>
+            </div>
+
+            <%= link_to new_exame_unidade_referencia_path(@exame), class: "inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-all shadow-sm" do %>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              <span>Adicionar Referência</span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <% if @exame.unidade_referencias.any? %>
+            <div class="space-y-3">
+              <% @exame.unidade_referencias.each_with_index do |ref, index| %>
+                <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-200 hover:shadow-md transition-all animate-fade-in" style="animation-delay: <%= index * 0.05 %>s">
+                  <div class="p-5">
+                    <div class="flex flex-col lg:flex-row lg:items-center gap-4">
+                      <!-- Unidade de Medida -->
+                      <div class="flex items-center gap-3 flex-1">
+                        <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center">
+                          <span class="text-lg font-bold text-indigo-600 break-all text-center">
+                            <%= ref.unidade_medida.simbolo %>
+                          </span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <p class="text-base font-semibold text-gray-900 break-words">
+                            <%= ref.unidade_medida.nome %>
+                          </p>
+                          <p class="text-sm text-gray-600">
+                            <%= ref.faixa_etaria %> •
+                            <% case ref.sexo
+                               when 'M' %>
+                              Masculino
+                            <% when 'F' %>
+                              Feminino
+                            <% when 'A' %>
+                              Ambos os sexos
+                            <% end %>
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- Valores de Referência -->
+                      <div class="flex items-center gap-4 lg:gap-6">
+                        <div class="text-center">
+                          <p class="text-xs text-gray-500 mb-1">Mínimo</p>
+                          <p class="text-lg font-bold text-green-600"><%= ref.valor_minimo %></p>
+                        </div>
+
+                        <div class="flex items-center">
+                          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                          </svg>
+                        </div>
+
+                        <div class="text-center">
+                          <p class="text-xs text-gray-500 mb-1">Máximo</p>
+                          <p class="text-lg font-bold text-red-600"><%= ref.valor_maximo %></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-12">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">Nenhuma referência cadastrada</h3>
+              <p class="text-sm text-gray-600 mb-6">Este exame ainda não possui unidades de referência cadastradas.</p>
+              <%= link_to new_exame_unidade_referencia_path(@exame), class: "inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-all" do %>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                <span>Adicionar Primeira Referência</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
+
+<style>
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out both;
+}
+
+.break-all {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+.break-words {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+</style>

@@ -1,90 +1,309 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="mb-6">
-    <%= link_to "Voltar para Exames", exames_path, class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
-  </div>
-
-  <div class="md:grid md:grid-cols-3 md:gap-6">
-    <div class="md:col-span-1">
-      <div class="px-4 sm:px-0">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Editar Exame</h3>
-        <p class="mt-1 text-sm text-gray-600">
-          Atualize as informações do exame abaixo.
-        </p>
-      </div>
-    </div>
-    <div class="mt-5 md:mt-0 md:col-span-2">
-      <%= form_with(model: @exame, local: true, class: "space-y-6") do |form| %>
-        <% if @exame.errors.any? %>
-          <div class="rounded-md bg-red-50 p-4">
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
-                </svg>
-              </div>
-              <div class="ml-3">
-                <h3 class="text-sm font-medium text-red-800">
-                  Erro ao atualizar o exame:
-                </h3>
-                <div class="mt-2 text-sm text-red-700">
-                  <ul role="list" class="list-disc space-y-1 pl-5">
-                    <% @exame.errors.full_messages.each do |message| %>
-                      <li><%= message %></li>
-                    <% end %>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
-        <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-          <div class="md:grid md:grid-cols-3 md:gap-6">
-            <div class="md:col-span-1">
-              <div class="px-4 sm:px-0">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Informações Básicas</h3>
-                <p class="mt-1 text-sm text-gray-600">
-                  Dados principais do exame.
-                </p>
-              </div>
-            </div>
-            <div class="mt-5 space-y-6 md:col-span-2 md:mt-0">
-              <div>
-                <%= form.label :nome, class: "block text-sm font-medium text-gray-700" %>
-                <%= form.text_field :nome, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" %>
-              </div>
-
-              <div>
-                <%= form.label :tipo, class: "block text-sm font-medium text-gray-700" %>
-                <%= form.select :tipo, 
-                      options_for_select([['Quantitativo', 'quantitativo'], ['Qualitativo', 'qualitativo']], @exame.tipo),
-                      {}, 
-                      class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 p-2" %>
-              </div>
-
-              <div>
-                <%= form.label :descricao, class: "block text-sm font-medium text-gray-700" %>
-                <%= form.text_area :descricao, rows: 3, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" %>
-              </div>
-
-              <div class="flex items-start">
-                <div class="flex items-center h-5">
-                  <%= form.check_box :ativo, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" %>
-                </div>
-                <div class="ml-3 text-sm">
-                  <%= form.label :ativo, "Exame ativo", class: "font-medium text-gray-700" %>
-                  <p class="text-gray-500">Marque esta opção se o exame estiver disponível para uso.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex justify-end">
-          <%= link_to "Cancelar", exame_path(@exame), class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-          <%= form.submit "Atualizar Exame", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-        </div>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Breadcrumb -->
+    <div class="mb-6">
+      <%= link_to exames_path, class: "inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 text-sm font-medium transition-colors" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        <span>Voltar para Exames</span>
       <% end %>
     </div>
+
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-shrink-0 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl p-3 shadow-lg">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Editar Exame</h1>
+          <p class="mt-1 text-sm text-gray-600">Atualize as informações do exame</p>
+        </div>
+      </div>
+    </div>
+
+    <%= form_with(model: @exame, local: true, class: "space-y-6") do |form| %>
+      <!-- Mensagens de Erro -->
+      <% if @exame.errors.any? %>
+        <div class="rounded-xl bg-red-50 border border-red-200 p-4 animate-shake">
+          <div class="flex gap-3">
+            <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-red-800 mb-2">Erro ao atualizar o exame</h3>
+              <ul class="text-sm text-red-700 space-y-1">
+                <% @exame.errors.full_messages.each do |message| %>
+                  <li>• <%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Card do Formulário -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <!-- Header do Card -->
+        <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-4 border-b border-gray-200">
+          <div class="flex items-center gap-3">
+            <div class="bg-indigo-100 rounded-lg p-2">
+              <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900">Informações do Exame</h2>
+          </div>
+        </div>
+
+        <!-- Conteúdo do Formulário -->
+        <div class="p-6 space-y-6">
+          <!-- Nome do Exame -->
+          <div>
+            <%= form.label :nome, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+                Nome do Exame <span class="text-red-500">*</span>
+              </span>
+            <% end %>
+            <%= form.text_field :nome, 
+                placeholder: "Digite o nome do exame...", 
+                class: "block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400" %>
+          </div>
+
+          <!-- Tipo de Exame -->
+          <div>
+            <%= form.label :tipo, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                Tipo de Exame <span class="text-red-500">*</span>
+              </span>
+            <% end %>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Quantitativo -->
+              <label class="relative flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all <%= @exame.tipo == 'quantitativo' ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-green-300 hover:bg-green-50' %>">
+                <%= form.radio_button :tipo, 'quantitativo', class: "sr-only tipo-radio" %>
+                <div class="flex items-center gap-3 flex-1">
+                  <div class="flex-shrink-0 <%= @exame.tipo == 'quantitativo' ? 'bg-green-100' : 'bg-gray-100' %> rounded-lg p-2">
+                    <svg class="w-6 h-6 <%= @exame.tipo == 'quantitativo' ? 'text-green-600' : 'text-gray-400' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-semibold text-gray-900">Quantitativo</p>
+                    <p class="text-xs text-gray-600 mt-0.5">Valores numéricos com unidades</p>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="w-5 h-5 rounded-full border-2 <%= @exame.tipo == 'quantitativo' ? 'border-green-600 bg-green-600' : 'border-gray-300' %> flex items-center justify-center">
+                      <% if @exame.tipo == 'quantitativo' %>
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                        </svg>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </label>
+
+              <!-- Qualitativo -->
+              <label class="relative flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all hover:bg-purple-50 hover:border-purple-500 <%= @exame.tipo == 'qualitativo' ? ' border-purple-500 bg-purple-50' : 'border-gray-200' %>">
+                <%= form.radio_button :tipo, 'qualitativo', class: "sr-only tipo-radio" %>
+                <div class="flex items-center gap-3 flex-1">
+                  <div class="flex-shrink-0 <%= @exame.tipo == 'qualitativo' ? 'bg-purple-100' : 'bg-gray-100' %> rounded-lg p-2">
+                    <svg class="w-6 h-6 <%= @exame.tipo == 'qualitativo' ? 'text-purple-600' : 'text-gray-400' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-semibold text-gray-900">Qualitativo</p>
+                    <p class="text-xs text-gray-600 mt-0.5">Presente ou Ausente</p>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="w-5 h-5 rounded-full border-2 <%= @exame.tipo == 'qualitativo' ? 'border-purple-600 bg-purple-600' : 'border-gray-300' %> flex items-center justify-center">
+                      <% if @exame.tipo == 'qualitativo' %>
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                        </svg>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Descrição -->
+          <div>
+            <%= form.label :descricao, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                </svg>
+                Descrição (Opcional)
+              </span>
+            <% end %>
+            <%= form.text_area :descricao, 
+                rows: 4, 
+                placeholder: "Descreva o exame, sua finalidade e informações relevantes...", 
+                class: "block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 resize-none" %>
+            <p class="mt-1 text-xs text-gray-500">Forneça informações adicionais sobre o exame</p>
+          </div>
+
+          <!-- Status Ativo -->
+          <div class="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-5 border border-gray-200">
+            <div class="flex items-start gap-4">
+              <div class="flex items-center h-5 mt-1">
+                <%= form.check_box :ativo, class: "w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer" %>
+              </div>
+              <div class="flex-1">
+                <%= form.label :ativo, class: "flex items-center gap-2 text-sm font-semibold text-gray-900 cursor-pointer" do %>
+                  <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  <span>Exame Ativo</span>
+                <% end %>
+                <p class="text-xs text-gray-600 mt-1">Marque esta opção se o exame estiver disponível para uso no sistema</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="flex items-center justify-between pt-6 border-t border-gray-200 bg-white rounded-2xl shadow-sm p-6">
+        <%= link_to exame_path(@exame), class: "inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          <span>Cancelar</span>
+        <% end %>
+        
+        <%= form.submit "Atualizar Exame", class: "inline-flex items-center gap-2 px-6 py-2.5 border-transparent rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 shadow-sm transition-all" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <span>Atualizar Exame</span>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
+
+<style>
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+.tipo-radio:checked + div {
+  /* Estilos aplicados via classes dinâmicas */
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Atualizar visualmente os radio buttons quando clicados
+  const radioButtons = document.querySelectorAll('.tipo-radio');
+  
+  radioButtons.forEach(radio => {
+    radio.addEventListener('change', function() {
+      // Remover classes de todos os labels
+      document.querySelectorAll('label[class*="border-green"], label[class*="border-purple"]').forEach(label => {
+        label.classList.remove('border-green-500', 'bg-green-50', 'border-purple-500', 'bg-purple-50');
+        label.classList.add('border-gray-200');
+        
+        // Resetar ícones
+        const icon = label.querySelector('.flex-shrink-0:first-of-type');
+        const checkCircle = label.querySelector('.flex-shrink-0:last-of-type > div');
+        if (icon) {
+          icon.classList.remove('bg-green-100', 'bg-purple-100');
+          icon.classList.add('bg-gray-100');
+          const svg = icon.querySelector('svg');
+          if (svg) {
+            svg.classList.remove('text-green-600', 'text-purple-600');
+            svg.classList.add('text-gray-400');
+          }
+        }
+        if (checkCircle) {
+          checkCircle.classList.remove('border-green-600', 'bg-green-600', 'border-purple-600', 'bg-purple-600');
+          checkCircle.classList.add('border-gray-300');
+          checkCircle.innerHTML = '';
+        }
+      });
+      
+      // Adicionar classes ao label selecionado
+      const label = this.closest('label');
+      const value = this.value;
+      
+      if (value === 'quantitativo') {
+        label.classList.remove('border-gray-200');
+        label.classList.add('border-green-500', 'bg-green-50');
+        
+        const icon = label.querySelector('.flex-shrink-0:first-of-type');
+        if (icon) {
+          icon.classList.remove('bg-gray-100');
+          icon.classList.add('bg-green-100');
+          const svg = icon.querySelector('svg');
+          if (svg) {
+            svg.classList.remove('text-gray-400');
+            svg.classList.add('text-green-600');
+          }
+        }
+        
+        const checkCircle = label.querySelector('.flex-shrink-0:last-of-type > div');
+        if (checkCircle) {
+          checkCircle.classList.remove('border-gray-300');
+          checkCircle.classList.add('border-green-600', 'bg-green-600');
+          checkCircle.innerHTML = '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
+        }
+      } else if (value === 'qualitativo') {
+        label.classList.remove('border-gray-200');
+        label.classList.add('border-purple-500', 'bg-purple-50');
+        
+        const icon = label.querySelector('.flex-shrink-0:first-of-type');
+        if (icon) {
+          icon.classList.remove('bg-gray-100');
+          icon.classList.add('bg-purple-100');
+          const svg = icon.querySelector('svg');
+          if (svg) {
+            svg.classList.remove('text-gray-400');
+            svg.classList.add('text-purple-600');
+          }
+        }
+        
+        const checkCircle = label.querySelector('.flex-shrink-0:last-of-type > div');
+        if (checkCircle) {
+          checkCircle.classList.remove('border-gray-300');
+          checkCircle.classList.add('border-purple-600', 'bg-purple-600');
+          checkCircle.innerHTML = '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
+        }
+      }
+    });
+  });
+});
+</script>

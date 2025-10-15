@@ -7,7 +7,7 @@ class ExamePacientesController < ApplicationController
     
     # Aplicar filtros de busca nos pacientes
     if params[:search_paciente].present?
-      pacientes = pacientes.where("LOWER(nome) LIKE ?", "%#{params[:search_paciente].downcase}%")
+      pacientes = pacientes.where("LOWER(pacientes.nome) LIKE ?", "%#{params[:search_paciente].downcase}%")
     end
     
     # Buscar exames para os pacientes filtrados
@@ -29,7 +29,7 @@ class ExamePacientesController < ApplicationController
     
     # Busca geral (mantida para compatibilidade)
     if params[:search].present?
-      pacientes_com_busca = pacientes.where("LOWER(nome) LIKE ?", "%#{params[:search].downcase}%")
+      pacientes_com_busca = pacientes.where("LOWER(pacientes.nome) LIKE ?", "%#{params[:search].downcase}%")
       pacientes_com_exames = pacientes.joins(:exame_pacientes => :exame)
                                      .where("LOWER(exames.nome) LIKE ?", 
                                             "%#{params[:search].downcase}%")
